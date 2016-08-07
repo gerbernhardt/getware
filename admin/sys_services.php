@@ -1,7 +1,7 @@
 <?php
 #
 # Getware: Ultra-Secure Script
-# Filename: admin/system/sys_demons.php, 2011/06/09
+# Filename: admin/system/sys_services.php, 2011/06/09
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -11,9 +11,9 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../../')&&exit();
 
-$_TABLE['name']='sys_demons';
+$_TABLE['name']='sys_services';
 $KERNEL->table();
-$_MODULE['title']='demons';
+$_MODULE['title']='services';
 if($KERNEL->privilege('add')) {
  $_MODULE['table']='100%';
  $_MODULE['size']=array(20,20,10);
