@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: themes/green.php, 2010/08/14
+# Filename: themes/start.php, 2010/08/14
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -65,8 +65,8 @@ class theme {
   # INI TABLE FOOTER
   print $HTML->table(1000,'','',1);
   print $HTML->td('left','middle','50%','','','&nbsp;');
-  $search=array('/{br}/','/{year}/');
-  $replace=array('<br>',date('Y'));
+  $search=array('/{br}/','/{year}/','/{/','/}/');
+  $replace=array('<br>',date('Y'),'<','>');
   print $HTML->td('right','middle','50%','','',preg_replace($search,$replace,$_SETTINGS['footer']).'<br>'._PAGEGENERATION_TIME.' '.$_TIME['total'].' '._SECONDS);
   print $HTML->table_close(1);
   # END TABLE FOOTER

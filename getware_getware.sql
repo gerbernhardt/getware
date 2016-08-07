@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-08-2016 a las 16:15:56
+-- Tiempo de generación: 07-08-2016 a las 17:18:24
 -- Versión del servidor: 5.6.15-log
 -- Versión de PHP: 5.5.8
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `getware`
+-- Base de datos: `getware_getware`
 --
 
 -- --------------------------------------------------------
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `sys_services` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Volcado de datos para la tabla `sys_demons`
+-- Volcado de datos para la tabla `sys_services`
 --
 
 INSERT INTO `sys_services` (`id`, `name`, `file`, `access`) VALUES
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `sys_sessions` (
 --
 
 INSERT INTO `sys_sessions` (`user`, `key`, `time`, `ip`) VALUES
-(3, '70abc8ac8ef4512775effd80419a5acb', 1470665318, '::1');
+(3, 'ac226e741ecfc570dc6233013998fc36', 1470667222, '::1');
 
 -- --------------------------------------------------------
 
@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `sys_settings` (
 --
 
 INSERT INTO `sys_settings` (`id`, `sitename`, `slogan`, `keywords`, `url`, `email`, `logo`, `date`, `language`, `theme`, `footer`, `module`, `description`) VALUES
-(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'https://github.com/gerbernhardt', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'green', 'Copyright {year} Getware', 'home', '');
+(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'https://github.com/gerbernhardt', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'start', 'Copyright {year} {a href=http://github.com/gerbernhardt}Getware{/a}{br}Autor: {a href=mailto://german.bernhardt@gmail.com}German Bernhardt{/a}', 'home', 'Sistema para administracion de empresas y contenidos web.');
 
 -- --------------------------------------------------------
 
