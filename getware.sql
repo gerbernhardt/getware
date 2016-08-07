@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `sys_settings` (
 --
 
 INSERT INTO `sys_settings` (`id`, `sitename`, `slogan`, `keywords`, `url`, `email`, `logo`, `date`, `language`, `theme`, `footer`, `module`, `description`) VALUES
-(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'http://localhost/getware_getware/', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'green', 'Copyright {year} Getware', 'home', '');
+(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'https://github.com/gerbernhardt', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'green', 'Copyright {year} Getware', 'home', '');
 
 -- --------------------------------------------------------
 
