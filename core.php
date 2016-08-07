@@ -206,14 +206,14 @@ class core {
   $output.='<meta http-equiv="expires" content="0" />';
   $output.='<meta name="resource-type" content="document" />';
   $output.='<meta name="distribution" content="global" />';
-  $output.='<meta name="author" content="'.$_SETTINGS['sitename'].'" />';
+  $output.='<meta name="author" content="'.$_SETTINGS['email'].'" />';
   $output.='<meta name="copyright" content="copyright (c) '.$_SETTINGS['sitename'].'" />';
   $output.='<meta name="keywords" content="'.$_SETTINGS['keywords'].' />';
-  $output.='<meta name="description" content="'.$_SETTINGS['keywords'].'" />';
+  $output.='<meta name="description" content="'.$_SETTINGS['slogan'].'" />';
   $output.='<meta name="robots" content="index,follow" />';
   $output.='<meta name="revisit-after" content="1 days" />';
   $output.='<meta name="rating" content="general" />';
-  $output.='<meta name="generator" content="getware for '.$_SETTINGS['sitename'].'" />';
+  $output.='<meta name="generator" content="getware" />';
   $output.='<link rel="shortcut icon" href="images/getware.png" />';
   # JQUERY
   $output.='<script src="includes/jquery-1.7.1.min.js"></script>';
