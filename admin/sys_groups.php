@@ -20,6 +20,8 @@ if($KERNEL->privilege('add')) {
  $KERNEL->dialog->add->show();
 } elseif($KERNEL->privilege('edit')) {
  $KERNEL->dialog->edit->show();
+} elseif($KERNEL->privilege('remove')) {
+ $KERNEL->dialog->remove->show();
 }
  $_MODULE['search']['size']=array(20,10);
  $_MODULE['search']['name']=array('name','maximize');
@@ -27,7 +29,7 @@ if($KERNEL->privilege('add')) {
  $_MODULE['grid']['size']=array(20,10);
  $_MODULE['grid']['name']=array('name','maximize');
  $_MODULE['grid']['field']=array('name','maximize');
- $_MODULE['grid']['menu']['field']=array('edit','add','remove');
+ $_MODULE['grid']['menu']['field']=array('edit','add','remove','save');
  $_MODULE['grid']['edit']=array('maximize');
  $KERNEL->search->autocomplete();
  $KERNEL->dialog->autocomplete();

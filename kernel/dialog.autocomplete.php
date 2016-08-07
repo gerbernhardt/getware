@@ -87,12 +87,14 @@ if(!isset($_TABLE['column']['comment'][$x])) {
   for($i=0;$fetch=$result->fetch_array();$i++) {
    if(function_exists('submenu_list')) {
     $sublist=submenu_list($autocomplete,$fetch[0],$table,$field);
-   }
-   if(isset($sublist['value'])){   	$values.='{';
-   	$values.='"value":"'.$KERNEL->set_autocomplete($sublist['value']).'"';
-   	if(isset($sublist['label'])) $values.=',"label":"'.$sublist['label'].'"';
-   	if(isset($sublist['info'])) $values.=',"info":"'.$sublist['info'].'"';
-   	$values.='}';   } else $values.='"'.$KERNEL->set_autocomplete($fetch[0]).'"';
+    if(is_array($sublist)){
+   	 $values.='{';
+   	 $values.='"value":"'.$KERNEL->set_autocomplete($sublist['value']).'"';
+     if(isset($sublist['label'])) $values.=',"label":"'.$sublist['label'].'"';
+     if(isset($sublist['info'])) $values.=',"info":"'.$sublist['info'].'"';
+     $values.='}';
+    } else $values.='"'.$KERNEL->set_autocomplete($fetch[0]).'"';
+   } else $values.='"'.$KERNEL->set_autocomplete($fetch[0]).'"';
    if($i<mysqli_num_rows($result)-1) $values.=',';
   }
  } else exit(mysqli_error($_DB['session']));

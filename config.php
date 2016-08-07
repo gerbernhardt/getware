@@ -29,6 +29,7 @@ if(preg_match('/soft-test.com.ar/',$_SERVER['SERVER_NAME'])){
 }
 
 $_SITES=array(
+ 'getware',
  'keblar',
  'medicos',
  'consorcios',

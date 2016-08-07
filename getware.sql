@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2016 a las 23:51:06
+-- Tiempo de generación: 07-08-2016 a las 16:15:56
 -- Versión del servidor: 5.6.15-log
 -- Versión de PHP: 5.5.8
 
@@ -90,8 +90,8 @@ CREATE TABLE IF NOT EXISTS `sys_admin_groups` (
 --
 
 INSERT INTO `sys_admin_groups` (`id`, `name`, `maximize`) VALUES
-(1, 'SYSTEM', 2),
-(2, 'GENERAL', 2);
+(1, 'SYSTEM', 1),
+(2, 'GENERAL', 1);
 
 -- --------------------------------------------------------
 
@@ -106,7 +106,14 @@ CREATE TABLE IF NOT EXISTS `sys_admin_privileges` (
   `privileges` tinyint(1) unsigned NOT NULL COMMENT 'REFERENCES(sys_admin_privileges_types_data#privilege#type#sys_admin_privileges_types.name)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `SECONDARY` (`user`,`module`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `sys_admin_privileges`
+--
+
+INSERT INTO `sys_admin_privileges` (`id`, `user`, `module`, `privileges`) VALUES
+(1, 2, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -144,6 +151,18 @@ CREATE TABLE IF NOT EXISTS `sys_admin_privileges_types_data` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`privilege`,`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `sys_admin_privileges_types_data`
+--
+
+INSERT INTO `sys_admin_privileges_types_data` (`privilege`, `type`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6);
 
 -- --------------------------------------------------------
 
@@ -347,6 +366,13 @@ CREATE TABLE IF NOT EXISTS `sys_sessions` (
   `ip` varchar(48) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `sys_sessions`
+--
+
+INSERT INTO `sys_sessions` (`user`, `key`, `time`, `ip`) VALUES
+(3, '70abc8ac8ef4512775effd80419a5acb', 1470665318, '::1');
+
 -- --------------------------------------------------------
 
 --
@@ -375,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `sys_settings` (
 --
 
 INSERT INTO `sys_settings` (`id`, `sitename`, `slogan`, `keywords`, `url`, `email`, `logo`, `date`, `language`, `theme`, `footer`, `module`, `description`) VALUES
-(1, 'KEBLAR S.A.', 'Sistema de Administracion', 'getware, ultra-secure', 'http://www.mrbconsultora.com.ar', 'mrb@mrbconsultora.com.ar', 'logo', '2004-04-15', 'es', 'green', 'Copyright {year} Keblar S.A.', 'home', '');
+(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'http://localhost/getware_getware/', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'green', 'Copyright {year} Getware', 'home', '');
 
 -- --------------------------------------------------------
 
@@ -578,3 +604,7 @@ INSERT INTO `sys_years` (`id`, `name`) VALUES
 (2109, 2109),
 (2110, 2110),
 (2111, 2111);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

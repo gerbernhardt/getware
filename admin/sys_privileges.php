@@ -21,6 +21,8 @@ if($KERNEL->privilege('add')) {
  $KERNEL->dialog->axx->show();
 } elseif($KERNEL->privilege('edit')) {
  $KERNEL->dialog->edit->show();
+} elseif($KERNEL->privilege('remove')) {
+ $KERNEL->dialog->remove->show();
 }
  $_MODULE['search']['size']=array(20,20);
  $_MODULE['search']['name']=array('user','module');

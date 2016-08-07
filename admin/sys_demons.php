@@ -20,6 +20,8 @@ if($KERNEL->privilege('add')) {
  $KERNEL->dialog->axx->show();
 } elseif($KERNEL->privilege('edit')) {
  $KERNEL->dialog->edit->show();
+} elseif($KERNEL->privilege('remove')) {
+ $KERNEL->dialog->remove->show();
 }
  $_MODULE['search']['size']=array(20,20,10);
  $_MODULE['search']['name']=array('name','file','access');
@@ -27,7 +29,7 @@ if($KERNEL->privilege('add')) {
  $_MODULE['grid']['size']=array(20,20,10,10);
  $_MODULE['grid']['name']=array('name','file','access');
  $_MODULE['grid']['field']=array('name','file','access');
- $_MODULE['grid']['menu']['field']=array('edit','add');
+ $_MODULE['grid']['menu']['field']=array('edit','add','remove');
  $KERNEL->search->autocomplete();
  $KERNEL->dialog->autocomplete();
  $KERNEL->query->make();

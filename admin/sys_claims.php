@@ -27,7 +27,7 @@ if($KERNEL->privilege('add')) {
  $_MODULE['grid']['size']=array(20,40);
  $_MODULE['grid']['name']=array('module','description');
  $_MODULE['grid']['field']=array('module','description');
- $_MODULE['grid']['menu']['field']=array('edit','add');
+ $_MODULE['grid']['menu']['field']=array('edit','add','remove');
  $KERNEL->search->autocomplete();
  $KERNEL->dialog->autocomplete();
  $KERNEL->query->make();
