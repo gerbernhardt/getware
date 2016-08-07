@@ -46,7 +46,7 @@ include('core.php');
 $CORE=new core;
 
 # RUN DEMONS
-include('demons.php');
+include('services.php');
 
 # SELECT HEADER MODULE
 include('headers.php');

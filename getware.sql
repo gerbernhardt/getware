@@ -46,7 +46,7 @@ INSERT INTO `sys_admin` (`id`, `name`, `file`, `access`, `group`) VALUES
 (3, 'Privileges', 'sys_privileges', 1, 1),
 (4, 'Groups', 'sys_groups', 1, 1),
 (5, 'Settings', 'sys_settings', 1, 1),
-(6, 'Demons', 'sys_demons', 1, 1),
+(6, 'Services', 'sys_services', 1, 1),
 (7, 'Blocks', 'sys_blocks', 1, 1),
 (8, 'General', 'general', 1, 2);
 
@@ -235,49 +235,6 @@ INSERT INTO `sys_boolean` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sys_demons`
---
-
-CREATE TABLE IF NOT EXISTS `sys_demons` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(25) NOT NULL DEFAULT '',
-  `file` varchar(25) NOT NULL DEFAULT '' COMMENT 'FILE(demons/.php)',
-  `access` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'REFERENCE(sys_demons_access.name)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `SECONDARY` (`file`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Volcado de datos para la tabla `sys_demons`
---
-
-INSERT INTO `sys_demons` (`id`, `name`, `file`, `access`) VALUES
-(1, 'User LOG', 'users_log', 2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sys_demons_access`
---
-
-CREATE TABLE IF NOT EXISTS `sys_demons_access` (
-  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `SECONDARY` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Volcado de datos para la tabla `sys_demons_access`
---
-
-INSERT INTO `sys_demons_access` (`id`, `name`) VALUES
-(1, 'Acivo'),
-(2, 'Inactivo');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `sys_modules`
 --
 
@@ -352,6 +309,49 @@ INSERT INTO `sys_months` (`id`, `name`) VALUES
 (10, 'OCTUBRE'),
 (11, 'NOVIEMBRE'),
 (12, 'DICIEMBRE');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sys_services`
+--
+
+CREATE TABLE IF NOT EXISTS `sys_services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL DEFAULT '',
+  `file` varchar(25) NOT NULL DEFAULT '' COMMENT 'FILE(services/.php)',
+  `access` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'REFERENCE(sys_services_access.name)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `SECONDARY` (`file`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `sys_demons`
+--
+
+INSERT INTO `sys_services` (`id`, `name`, `file`, `access`) VALUES
+(1, 'User LOG', 'users_log', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sys_services_access`
+--
+
+CREATE TABLE IF NOT EXISTS `sys_services_access` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `SECONDARY` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `sys_services_access`
+--
+
+INSERT INTO `sys_services_access` (`id`, `name`) VALUES
+(1, 'Acivo'),
+(2, 'Inactivo');
 
 -- --------------------------------------------------------
 

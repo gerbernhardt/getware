@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: demons.php, 2005/06/27
+# Filename: services.php, 2005/06/27
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -12,10 +12,10 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-$sql='SELECT x.file FROM '.$_DB['prefix'].'sys_demons AS x WHERE x.access=1';
+$sql='SELECT x.file FROM '.$_DB['prefix'].'sys_services AS x WHERE x.access=1';
 $result=mysqli_query($_DB['session'],$sql);
 while($fetch=$result->fetch_array())
- if(file_exists('demons/'.$fetch['file'].'.php'))
-  include('demons/'.$fetch['file'].'.php');
+ if(file_exists('services/'.$fetch['file'].'.php'))
+  include('services/'.$fetch['file'].'.php');
 
 ?>

@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: demons/users_log.php, 2005/06/27
+# Filename: services/users_log.php, 2005/06/27
 # Copyright (c) 2004 - 2012 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
