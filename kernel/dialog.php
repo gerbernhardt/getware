@@ -20,7 +20,7 @@ class kernel_dialog{
    $path='kernel/dialog.';$files=array('submenu');eval($CORE->include_enc());
   }elseif(isset($_GET['autocomplete'])&&isset($_GET['term'])) {
    $x=intval($_GET['autocomplete']);
-   $path='kernel/dialog.';$files=array('autocomplete');eval($CORE->include_enc());
+   $path='kernel/dialog.';$files=array('autocomplete');eval($CORE->include_enc());//
   }
  }
  # DIALOG JSON GENERATOR
