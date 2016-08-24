@@ -139,7 +139,7 @@ class kernel_dialog_axx_check{
  function info() {
   global $_DB,$_TABLE,$_ADMIN;
   if(!isset($_POST['window'])) exit();
-  $_MODULE['output']='[{run:"$getware.ui.content.info.add",window:"'.$_POST['window'].'",';
+  $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
   $rows='';
   $data='';
   $this->make_array('int');

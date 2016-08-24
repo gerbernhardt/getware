@@ -85,7 +85,8 @@ class kernel_search{
    $name.='"'.utf8_encode(strtoupper(str_replace('_',' ',$_MODULE['search']['name'][$i]))).'"';
    $size.='"'.$_MODULE['search']['size'][$i].'"';
    isset($_POST['search'][$i])?$data.='"'.$_POST['search'][$i].'"':$data.='""';
-   if(isset($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]])){   	$condition.=$_MODULE['search']['name'][$i].':[';
+   if(isset($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]])){
+   	$condition.=$_MODULE['search']['name'][$i].':[';
    	for($j=0;$j<count($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]]);$j++){
    	 $condition.='"'.$_MODULE['search']['condition'][$_MODULE['search']['name'][$i]][$j].'"';
    	 if($j<count($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]])-1) $condition.=',';
@@ -101,7 +102,7 @@ class kernel_search{
   if(isset($_MODULE['next']))
    $_MODULE['output'].=',';
   else $_MODULE['output']='';
-  $_MODULE['output'].='{run:"$getware.ui.search.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",'.$name.'],'.$size.'],'.$data.'],'.$condition.'}}';
+  $_MODULE['output'].='{run:"getware.ui.search.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",'.$name.'],'.$size.'],'.$data.'],'.$condition.'}}';
  }
 }
 $KERNEL->search=new kernel_search;

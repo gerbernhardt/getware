@@ -35,7 +35,8 @@ if(isset($_GET['save'])&&($_ADMIN['edit']==true)) {
  $rows='';
  $data='';
  $affected_rows=$_GET['save'];
- for($i=0;$i<count($_GET['save']);$i++) {  if(function_exists('grid_before_edit')){
+ for($i=0;$i<count($_GET['save']);$i++) {
+  if(function_exists('grid_before_edit')){
    $grid_before_edit=grid_before_edit($_GET['save'][$i]);
   }
   $sql='UPDATE '.$_TABLE['name'].' AS x';
@@ -97,7 +98,8 @@ if(isset($_GET['save'])&&($_ADMIN['edit']==true)) {
   if(mysqli_query($_DB['session'],$sql)) {
    if(mysqli_affected_rows($_DB['session'])>0) {
     $data.='"2"';
-   } else {   	$data.='"1"';unset($affected_rows[$i]);
+   } else {
+   	$data.='"1"';unset($affected_rows[$i]);
    }
 
    ///// funcion para el duplicado de registros
@@ -117,7 +119,7 @@ if(isset($_GET['save'])&&($_ADMIN['edit']==true)) {
  }
  $output='[';
  if($grid_after_edit_affected_rows) $output.=$grid_after_edit_affected_rows.',';
- $output.='{run:"$getware.ui.content.info.grid",window:"'.$_POST['window'].'",rows:['.$rows.'],data:['.$data.']}';
+ $output.='{run:"getware.ui.content.info.grid",window:"'.$_POST['window'].'",rows:['.$rows.'],data:['.$data.']}';
  $output.=']';
  exit($output);
 }

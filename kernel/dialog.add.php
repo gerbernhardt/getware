@@ -45,7 +45,7 @@ class kernel_dialog_add{
  function info() {
   global $_TABLE,$_ADMIN;
   if(!isset($_POST['window'])) exit();
-  $_MODULE['output']='[{run:"$getware.ui.content.info.add",window:"'.$_POST['window'].'",';
+  $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
   $rows='';
   $data='';
   for($i=$_ADMIN['ini'];$i<$_ADMIN['end'];$i++) {

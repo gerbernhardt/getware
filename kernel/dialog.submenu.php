@@ -12,7 +12,7 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
 
-$_MODULE['output']='{run:"$getware.ui.submenu.make",window:"'.$_GET['window'].'",id:"'.$_GET['submenu'].'",title:"x"';
+$_MODULE['output']='{run:"getware.ui.submenu.make",window:"'.$_GET['window'].'",id:"'.$_GET['submenu'].'",title:"x"';
 $row['value']='';
 $row['label']='';
 $row['info']='';

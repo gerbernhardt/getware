@@ -82,7 +82,7 @@ if($_GET['add']=='save') {
    if(preg_match('/Column \'.*\' cannot be null/',$error)) {
     $x=preg_replace('/Column \'/','',$error);
     $x=preg_replace('/\' cannot be null/','',$x);
-    $_MODULE['output']='[{run:"$getware.ui.content.info.add",window:"'.$_POST['window'].'",';
+    $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
     $rows='';
     $data='';
     for($i=$_ADMIN['ini'];$i<$_ADMIN['end'];$i++) {
@@ -122,7 +122,7 @@ if($_GET['add']=='save') {
     for($i=0;$fetch=$result->fetch_array();$i++) {
     $error[$i]=$fetch[0];
     }
-    $_MODULE['output']='[{run:"$getware.ui.content.info.add",window:"'.$_POST['window'].'",';
+    $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
     $rows='';
     $data='';
     for($i=$_ADMIN['ini'];$i<count($_TABLE['column']['name']);$i++) {
@@ -145,7 +145,7 @@ if($_GET['add']=='save') {
     $x=preg_replace('/Incorrect .* value: \'.*\' for column \'/','',$error);
     $x=preg_replace('/\'.*/','',$x);
     //$KERNEL->alert($x);
-    $_MODULE['output']='[{run:"$getware.ui.content.info.add",window:"'.$_POST['window'].'",';
+    $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
     $rows='';
     $data='';
     for($i=$_ADMIN['ini'];$i<count($_TABLE['column']['name']);$i++) {

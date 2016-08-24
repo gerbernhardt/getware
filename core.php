@@ -166,7 +166,7 @@ class core {
  }
  # ALERT JSON GENERATOR
  function alert($data,$reference=false,$module=false,$action=false,$blank=false) {
-  $_MODULE['output']='[{run:"$getware.ui.alert.make",';
+  $_MODULE['output']='[{run:"getware.ui.alert.make",';
   if($reference) $_MODULE['output'].='reference:"'.$reference.'",';
   if($module) $_MODULE['output'].='module:"'.$module.'",';
   if($action) $_MODULE['output'].='action:"'.$action.'",';
@@ -187,7 +187,7 @@ class core {
  }
  # LOGIN JSON GENERATOR
  function login($data) {
-  $_MODULE['output']='[{run:"$getware.ui.login.make",';
+  $_MODULE['output']='[{run:"getware.ui.login.make",';
   $_MODULE['output'].='get:"'.html_entity_decode($_SERVER['PATH'].'index.php'.'?'.$_SERVER['QUERY_STRING']).'",';
   $_GET['post']='';
   $this->post($_POST);

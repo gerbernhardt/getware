@@ -16,7 +16,7 @@ if(!isset( $_MODULE['output'])) {
  $_MODULE['output']='';$append='false';
 } else {$_MODULE['output'].=',';$append='true';}
 if(isset($_MODULE['grid']['edit'])) $_MODULE['grid']['edit']=$this->make_array($_MODULE['grid']['edit']);
-$_MODULE['output'].='{run:"$getware.ui.grid.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",append:"'.$append.'",';
+$_MODULE['output'].='{run:"getware.ui.grid.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",append:"'.$append.'",';
 
 $type='content_center';
 $_MODULE['output'].='title:"'.strtoupper($_MODULE['title']).'",';
@@ -55,7 +55,8 @@ if($result=mysqli_query($_DB['session'],$sql)) {
    # MULTIPLEX  SELECT DIMENSIONAL
    #
    $eman=$_TABLE['column']['eman'][$_MODULE['grid']['field'][$j-1]];
-   if(preg_match('/REFERENCES/i',$_TABLE['column']['function'][$eman])){    $field='CONCAT(';
+   if(preg_match('/REFERENCES/i',$_TABLE['column']['function'][$eman])){
+    $field='CONCAT(';
     for($k=1;$k<count($_TABLE['column']['comment'][$eman]);$k++) {
      //$_TABLE['column']['comment'][$x][0]='afiliados_sexos#afiliado#sexo#sexos';
      //$_TABLE['column']['comment'][$x][1]='nombre';

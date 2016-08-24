@@ -28,12 +28,12 @@ class kernel_dialog{
   global $_ADMIN,$_TABLE,$_MODULE;
   if(isset($_MODULE['json']['extra']))
    $output=$_MODULE['json']['extra'];
-  else $output='{run:"$getware.ui.dialog.make",';
+  else $output='{run:"getware.ui.dialog.make",';
   $output.='title:"'.strtoupper($sync.' '.$_MODULE['title']).'",';
   $output.='module:"'.$_GET['admin'].'",';
   $output.='ini:'.$_ADMIN['ini'].',';
   if(!isset($_MODULE['render']))
-   $output.='afterAppend:"$getware.ui.content.render",';
+   $output.='afterAppend:"getware.ui.content.render",';
   # ROWS BR
   if(isset($_MODULE['br']))
    $output.='br:'.$_MODULE['br'].',';

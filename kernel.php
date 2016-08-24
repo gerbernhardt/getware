@@ -94,9 +94,11 @@ class kernel{
   else return 'varchar';
  }
 
-function set_autocomplete($str){ $str=str_replace('\n','',$str);
+function set_autocomplete($str){
+ $str=str_replace('\n','',$str);
  $str=str_replace('&quot;','\\"',$str);
- return $str;}
+ return $str;
+}
  # JSON PRINT
  function json_print() {
   global $_MODULE;
@@ -111,13 +113,13 @@ function set_autocomplete($str){ $str=str_replace('\n','',$str);
   }
 
   if(!isset($_GET['ajax']))
-   print '<script>$getware.data(\''.$_MODULE['output'].'\');</script>';
+   print '<script>getware.data(\''.$_MODULE['output'].'\');</script>';
   else print $_MODULE['output'];
  }
  # ALERT JSON GENERATOR
  function alert($data,$reference=false,$module=false,$action=false,$blank=false,$button='Ok',$exec=false) {
   global $_ADMIN,$_TABLE,$_MODULE;
-  $_MODULE['output']='{run:"$getware.ui.alert.make",';
+  $_MODULE['output']='{run:"getware.ui.alert.make",';
   if($reference) $_MODULE['output'].='reference:"'.$reference.'",';
   if($module) $_MODULE['output'].='module:"'.$module.'",';
   if($action) $_MODULE['output'].='action:"'.$action.'",';
