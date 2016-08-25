@@ -17,7 +17,7 @@ $sql='SELECT x.* FROM '.$_DB['prefix'].'sys_modules AS x ORDER BY x.id';
 if($result=mysqli_query($_DB['session'],$sql)) {
  while($fetch=$result->fetch_array()) {
   if($fetch['shadow']>0&&$fetch['access']>0)
-   $content.=$dot.'<a href="#" onclick="javascript:$getware.get(\'module='.$fetch['file'].'\');">Login</a><br>';
+   $content.=$dot.'<a href="#" onclick="javascript:getware.get(\'module='.$fetch['file'].'\');">Login</a><br>';
  }
 }
 

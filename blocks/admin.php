@@ -28,7 +28,7 @@ if($result['group']=mysqli_query($_DB['session'],$sql)) {
   $input='';
   if($result['admin']=mysqli_query($_DB['session'],$sql)) {
    while($admin=$result['admin']->fetch_array()) {
-    $input.=$dot.'<a href="#" onclick="javascript:$getware.get(\'module=admin&amp;admin='.$admin['file'].'\');">'.$admin['name'].'</a><br>';
+    $input.=$dot.'<a href="#" onclick="javascript:getware.get(\'module=admin&amp;admin='.$admin['file'].'\');">'.$admin['name'].'</a><br>';
    }
   }
   $output.=$input.'</div></div>';

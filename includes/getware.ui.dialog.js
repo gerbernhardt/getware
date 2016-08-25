@@ -76,9 +76,9 @@ getware.ui.dialog={
   if(!json.simulation) json.simulation=false;
   if(!json.pageOrientation) json.pageOrientation='landscape';
   var output='<div id="ui-window-'+date+'" pageOrientation="'+json.pageOrientation+'">';
-  // SI TIENE EL PREFIJO  EJEUTA LA FUNCION COMPLETA
+  // SI TIENE EL PREFIJO "getware" EJEUTA LA FUNCION COMPLETA
   // SINO LO TOMA COMO UN INDICE Y EJECUTA COMO UNA SUBFUNCION DE GETCONTENT.xxx
-  if(/\/.test(json.append))
+  if(/getware/.test(json.append))
    var append=eval(json.append+'(date,json);');
   else var append=eval('getware.ui.content.'+json.append+'(date,json);');
   /*

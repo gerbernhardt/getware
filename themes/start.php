@@ -73,7 +73,7 @@ class theme {
   print '</div>';
   print '<div id="print"></div>';
   if(!isset($_GET['ajax']))
-   print '<script>$getware.data($(\'#content_center\').html());</script>';
+   print '<script>getware.data($(\'#content_center\').html());</script>';
   print '</body>';
   print '</html>';
  }
