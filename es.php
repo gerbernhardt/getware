@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: language/es.php, 2004/06/07
+# Filename: es.php, 2004/06/07
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #

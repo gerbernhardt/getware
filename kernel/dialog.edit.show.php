@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: dialog.edit.show.php,2004/09/06
+# Filename: kernel/dialog.edit.show.php,2004/09/06
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -11,7 +11,8 @@
 # the Free Software Foundation; either version 2 of the License.
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
-if(!isset($_GET['save'])) { if(!is_array($_GET['edit'])) $CORE->secure_get('edit');
+if(!isset($_GET['save'])) {
+ if(!is_array($_GET['edit'])) $CORE->secure_get('edit');
  $sql='SELECT x.* FROM '.$_TABLE['name'].' AS x WHERE x.id IN('.implode(',',$_GET['edit']).')';
  if($result['j']=mysqli_query($_DB['session'],$sql)) {
   $_MODULE['output']='';

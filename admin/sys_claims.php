@@ -1,7 +1,7 @@
 <?php
 #
 # Getware: Ultra-Secure Script
-# Filename: admin/system/sys_admin.php, 2011/06/09
+# Filename: admin/sys_admin.php, 2011/06/09
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #

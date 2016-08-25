@@ -1,6 +1,6 @@
 #
 # Getware:Ultra-Secure Script
-# Filename:themes/start.css, 2010/08/14
+# Filename: themes/start.css, 2010/08/14
 # Copyright (c) 2004 - 2012 by German Bernhardt
 # E-mail:<german.bernhardt@gmail.com>
 #
@@ -19,7 +19,8 @@ a:link{color:#000000;text-decoration:none;}
 a:visited{color:#000000;text-decoration:none;}
 a:active{color:#000000;text-decoration:none;}
 a:hover{color:#bbbbbb;text-decoration:none;}
-.icon-toolbar {	width:16px;
+.icon-toolbar {
+	width:16px;
     height:16px;
     cursor:hand;
     position:absolute;
@@ -29,7 +30,8 @@ a:hover{color:#bbbbbb;text-decoration:none;}
 /*
  * ICONS & PADDING MENU
  */
-.icon {	width:16px;
+.icon {
+	width:16px;
     height:16px;
     cursor:hand;
     position:absolute;
@@ -77,7 +79,8 @@ input#password{background:url(../images/icons.png) no-repeat scroll 0 0 transpar
 /*
  * INPUTS NORMAL
  */
-input,select,textarea{ border:1px solid #A6C9E2;
+input,select,textarea{
+ border:1px solid #A6C9E2;
  margin:2px;
  -moz-border-radius:4px;
  border-radius:4px;

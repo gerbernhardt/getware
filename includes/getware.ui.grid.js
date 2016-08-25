@@ -2,7 +2,7 @@
 // Getware: Ultra-Secure Script
 // Filename: includes/getware.ui.grid.js, 2012/04/03
 // Copyright (c) 2012 by German Bernhardt
-// E-mail: <german.bernhardt@gmail.com | german.bernhardt@hotmail.com>
+// E-mail: <german.bernhardt@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

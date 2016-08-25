@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: grid.edit.save.php,2004/09/06
+# Filename: kernel/grid.edit.save.php,2004/09/06
 # Copyright (c) 2004 - 2012 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #

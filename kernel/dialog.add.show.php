@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: dialog.add.php,2004/09/06
+# Filename: kernel/dialog.add.show.php,2004/09/06
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -22,8 +22,10 @@ if($_GET['add']!='save') {
   $name.='"'.utf8_encode(strtoupper(str_replace('_',' ',$_TABLE['column']['name'][$i]))).'"';
   $type.='"'.$KERNEL->row_type($i).'"';
 
-  if(isset($_MODULE['data'][$_TABLE['column']['name'][$i]])){   $data.='"'.$_MODULE['data'][$_TABLE['column']['name'][$i]].'"';
-  }elseif($_TABLE['column']['function'][$i]=='REFERENCES'){     $field=$_TABLE['column']['comment'][$i][1];
+  if(isset($_MODULE['data'][$_TABLE['column']['name'][$i]])){
+   $data.='"'.$_MODULE['data'][$_TABLE['column']['name'][$i]].'"';
+  }elseif($_TABLE['column']['function'][$i]=='REFERENCES'){
+     $field=$_TABLE['column']['comment'][$i][1];
      $table=explode('#',$_TABLE['column']['comment'][$i][0]);
      // NO SELECT
      $sql='SELECT '.$field.' FROM '.$table[3].' AS x';

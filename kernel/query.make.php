@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: query.make.php,2004/09/06
+# Filename: kernel/query.make.php,2004/09/06
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -47,7 +47,9 @@ if(function_exists('query')) {
     $_AUX['separator']=$_TABLE['column']['separator'][$x];
     if(isset($_MODULE['grid']['separator'][$_MODULE['grid']['name'][$i]])){
      $_TABLE['column']['separator'][$x]=$_MODULE['grid']['separator'][$_MODULE['grid']['name'][$i]];
-    }else{     for($j=1;$j<count($_TABLE['column']['comment'][$x]);$j++)      $_TABLE['column']['separator'][$x][$j]='';
+    }else{
+     for($j=1;$j<count($_TABLE['column']['comment'][$x]);$j++)
+      $_TABLE['column']['separator'][$x][$j]='';
     }
     $_TABLE['column']['comment'][$x]=$_MODULE['grid']['reference'][$_MODULE['grid']['name'][$i]];
    }
@@ -55,11 +57,13 @@ if(function_exists('query')) {
    $_MODULE['query']['select'].='CONCAT(';
    for($j=1;$j<count($_TABLE['column']['comment'][$x]);$j++) {
     // SUB REGISTROS
-    if(preg_match('/\[*\]/',$_TABLE['column']['comment'][$x][$j])){     $_MODULE['query']['select'].=$this->subquery($_TABLE['column']['comment'][$x][$j],$as);
+    if(preg_match('/\[*\]/',$_TABLE['column']['comment'][$x][$j])){
+     $_MODULE['query']['select'].=$this->subquery($_TABLE['column']['comment'][$x][$j],$as);
     }else $_MODULE['query']['select'].='x'.$as.'.'.$_TABLE['column']['comment'][$x][$j];
 
     $_MODULE['query']['select'].=',\''.$_TABLE['column']['separator'][$x][$j].'\'';
-    if($j<count($_TABLE['column']['comment'][$x])-1){     $_MODULE['query']['select'].=',';
+    if($j<count($_TABLE['column']['comment'][$x])-1){
+     $_MODULE['query']['select'].=',';
     }
 
    }// END FOR
@@ -118,7 +122,8 @@ if(function_exists('query')) {
     }
     $field.=')';
     // VUELVE EL REFERENCE ANTERIOR
-    if(isset($_AUX)){     $_TABLE['column']['comment'][$x]=$_AUX['comment'];
+    if(isset($_AUX)){
+     $_TABLE['column']['comment'][$x]=$_AUX['comment'];
      $_TABLE['column']['separator'][$x]=$_AUX['separator'];
      unset($_AUX);
     }

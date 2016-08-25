@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: dialog.axx.save.php,2004/09/06
+# Filename: kernel/dialog.axx.save.php,2004/09/06
 # Copyright (c) 2004 - 2011 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
@@ -83,7 +83,8 @@ if($_GET['add']=='save') {
       #
       $table=explode('#',$_TABLE['column']['comment'][$i][0]);
       if(is_array($_POST[$i])){
-       for($j=1;$j<count($_POST[$i]);$j++) {        $sql='INSERT INTO '.$table[0].' (`'.$table[1].'`,`'.$table[2].'`) VALUES ';
+       for($j=1;$j<count($_POST[$i]);$j++) {
+        $sql='INSERT INTO '.$table[0].' (`'.$table[1].'`,`'.$table[2].'`) VALUES ';
        	for($k=0;$k<count($_POST[$i][$j]);$k++) {
          $sql.='('.$eid[($j-1)].',(SELECT xx.id FROM '.$table[3].' AS xx WHERE xx.'.$_TABLE['column']['comment'][$i][1].'="'.$_POST[$i][$j][$k].'"))';
          if($k<count($_POST[$i][$j])-1) $sql.=',';

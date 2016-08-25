@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: dialog.remove.php, 2012/04/03
+# Filename: kernel/dialog.remove.php, 2012/04/03
 # Copyright (c) 2010 - 2012 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
