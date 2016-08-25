@@ -17,7 +17,7 @@ if(isset($_POST['password'])&&count($_POST['password'])==3) {
  if(md5($_POST['password'][0])==$_USER['password']) {
   if($_POST['password'][1]==$_POST['password'][2]) {
    if(strlen($_POST['password'][1])>5) {
-    $sql='UPDATE '.$_DB['prefix'].'_users  AS x';
+    $sql='UPDATE _users  AS x';
     $sql.=' SET x.password=\''.$_POST['password'][1].'\'';
     $sql.=' WHERE x.id='.$_USER['id'];
     if(mysqli_query($_DB['session'],$sql))

@@ -21,7 +21,7 @@ include('./kernel.php');
 $_ADMIN['file']=false;
 
 # TODOS LO PRIVILEGIOS SON FALSE
-$sql='SELECT x.name FROM '.$_DB['prefix'].'sys_admin_privileges_types AS x';
+$sql='SELECT x.name FROM sys_admin_privileges_types AS x';
 if($result=mysqli_query($_DB['session'],$sql)){
  while($fetch=$result->fetch_array()){
   if($_USER['type']==1)
@@ -32,7 +32,7 @@ if($result=mysqli_query($_DB['session'],$sql)){
 
 if(isset($_GET['admin'])&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')) {
  # VERIFICA QUE EL MODULO SE ENCUENTRE ACTIVO
- $sql='SELECT x.id FROM '.$_DB['prefix'].'sys_admin AS x WHERE x.file=\''.$_GET['admin'].'\' AND x.access=1';
+ $sql='SELECT x.id FROM sys_admin AS x WHERE x.file=\''.$_GET['admin'].'\' AND x.access=1';
  if($result=mysqli_query($_DB['session'],$sql)){
   if($fetch=$result->fetch_array()){
    $_ADMIN['file']=true;
@@ -40,13 +40,13 @@ if(isset($_GET['admin'])&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')) {
    # INI NORMAL USER
    if($_USER['type']!=1){
     # REVISA LA TABLA DE PRIVILEGIOS
-    $sql='SELECT x.* FROM '.$_DB['prefix'].'sys_admin_privileges AS x WHERE x.user='.$_USER['id'].' AND x.module=\''.$fetch['id'].'\'';
+    $sql='SELECT x.* FROM sys_admin_privileges AS x WHERE x.user='.$_USER['id'].' AND x.module=\''.$fetch['id'].'\'';
     if($result=mysqli_query($_DB['session'],$sql)){
      if($fetch=$result->fetch_array()){
       $_ADMIN['file']=true;//TIENE ACCESO AL MODULO
-      $sql='SELECT DISTINCT x1.name FROM '.$_DB['prefix'].'sys_admin_privileges AS x';
-      $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_privileges_types_data AS x0 ON x0.privilege=x.id';
-      $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_privileges_types AS x1 ON x0.type=x1.id';
+      $sql='SELECT DISTINCT x1.name FROM sys_admin_privileges AS x';
+      $sql.=' INNER JOIN sys_admin_privileges_types_data AS x0 ON x0.privilege=x.id';
+      $sql.=' INNER JOIN sys_admin_privileges_types AS x1 ON x0.type=x1.id';
       $sql.=' WHERE x.user='.$_USER['id'].' AND x.module='.$fetch['module'];
       if($result=mysqli_query($_DB['session'],$sql)){
        while($fetch=$result->fetch_array()){

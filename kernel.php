@@ -17,7 +17,6 @@ class kernel{
  # TABLE ANALIZER
  function table() {
   global $_ADMIN,$_TABLE,$_DB;
-  $_TABLE['name']=$_DB['prefix'].$_TABLE['name'];
   $sql='SELECT DISTINCT XC.column_name,XC.column_type,XC.column_comment';
   $sql.=' FROM INFORMATION_SCHEMA.COLUMNS AS XC';
   $sql.=' WHERE XC.TABLE_NAME=\''.$_TABLE['name'].'\' AND XC.TABLE_SCHEMA=\''.$_DB['name'].'\'';

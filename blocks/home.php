@@ -13,7 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 $content=$dot.'<a href="index.php">'._HOME.'</a><br>';
-$sql='SELECT x.* FROM '.$_DB['prefix'].'sys_modules AS x ORDER BY x.id';
+$sql='SELECT x.* FROM sys_modules AS x ORDER BY x.id';
 if($result=mysqli_query($_DB['session'],$sql)) {
  while($fetch=$result->fetch_array()) {
   if($fetch['shadow']>0&&$fetch['access']>0)

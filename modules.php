@@ -13,7 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 $index=1;
 if(file_exists('modules/'.$_GET['module'].'.php')) {
- $sql='SELECT x.file,x.access FROM '.$_DB['prefix'].'sys_modules AS x WHERE x.file=\''.$_GET['module'].'\'';
+ $sql='SELECT x.file,x.access FROM sys_modules AS x WHERE x.file=\''.$_GET['module'].'\'';
  if($result=mysqli_query($_DB['session'],$sql)) {
   if($fetch=$result->fetch_array()) {
    if($CORE->access($fetch['access'])) {

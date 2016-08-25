@@ -13,14 +13,14 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
 
 // SAVE CACHE QUERY
-$cache='DELETE FROM '.$_DB['prefix'].'sys_query';
+$cache='DELETE FROM sys_query';
 $cache.=' WHERE (ip=\''.$_SERVER['REMOTE_ADDR'].'\'';
 $cache.=' AND module=\''.$_GET['admin'].'\'';
 $cache.=' AND user='.$_USER['id'];
 $cache.=') OR time<'.time();
 mysqli_query($_DB['session'],$cache);
 # INSERT QUERY
-$cache='INSERT INTO '.$_DB['prefix'].'sys_query (`user`,`sql`,`module`,`ip`,`time`)';
+$cache='INSERT INTO sys_query (`user`,`sql`,`module`,`ip`,`time`)';
 $cache.=' VALUES ('.$_USER['id'].',\''.base64_encode($cache).'\',\''.$_GET['admin'].'\',\''.$_SERVER['REMOTE_ADDR'].'\',\''.(time()+(3600*24)).'\')';
 mysqli_query($_DB['session'],$cache);
 //if(!mysqli_query($cache)) exit('no lo guardo');

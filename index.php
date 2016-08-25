@@ -25,7 +25,7 @@ include('security.php');
 include('auth.php');
 
 # SELECT WEBPAGE SETTINGS
-$sql='SELECT x.* FROM '.$_DB['prefix'].'sys_settings AS x ORDER BY x.id DESC LIMIT 1';
+$sql='SELECT x.* FROM sys_settings AS x ORDER BY x.id DESC LIMIT 1';
 if($result=mysqli_query($_DB['session'],$sql))
  $_SETTINGS=$result->fetch_array();
 else exit(mysqli_error($_DB['session']));

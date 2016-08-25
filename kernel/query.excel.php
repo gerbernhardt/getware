@@ -14,7 +14,7 @@ if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exi
 
 if(isset($_GET['excel'])){
  //include('../PHPExcel');
- $sql='SELECT x.sql FROM '.$_DB['prefix'].'sys_query AS x';
+ $sql='SELECT x.sql FROM sys_query AS x';
  $sql.=' WHERE x.user=\''.$_USER['id'].'\' AND x.module=\''.$_GET['admin'].'\' AND x.ip=\''.$_SERVER['REMOTE_ADDR'].'\'';
  if($result=mysqli_query($_DB['session'],$sql)){
   if($fetch=$result->fetch_array()){

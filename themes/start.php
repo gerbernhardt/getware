@@ -16,7 +16,7 @@ class theme {
 
  # FUNCTION HEADER()
  function header() {
-  global $CORE,$HTML,$_SETTINGS,$header,$_USER,$links;
+  global $CORE,$_SETTINGS,$_USER;
   print $CORE->header($_SETTINGS['sitename'].' - '.$_SETTINGS['slogan']);
   print '<body>';
   print '<div id="fade">';
@@ -64,11 +64,11 @@ class theme {
 
  # FUNCTION FOOTER()
  function footer() {
-  global $HTML,$index,$_SETTINGS,$_TIME;
+  global $_SETTINGS,$_TIME;
   print '</td>';
   
   # INI CONTENT RIGHT
-  if($index==2) {
+  if(isset($index)) {
    print '<td id="content_right" width="171" valign="top">';
    $CORE->blocks('right');
    print '</td>';

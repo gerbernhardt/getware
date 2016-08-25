@@ -142,7 +142,7 @@ class core {
   $dot='&nbsp;<b>&middot;</b> ';
   if(file_exists('themes/'.$_SETTINGS['theme'].'/dot.gif'))
    $dot='&nbsp;<img src="themes/'.$_SETTINGS['theme'].'/dot.gif"> ';
-  $sql='SELECT * FROM '.$_DB['prefix'].'sys_blocks WHERE access IN('.$in.') ORDER BY id';
+  $sql='SELECT * FROM sys_blocks WHERE access IN('.$in.') ORDER BY id';
   if($r=mysqli_query($_DB['session'],$sql)) {
    while($f=$r->fetch_array()) {
     if(file_exists('blocks/'.$f['file'].'.php')) {

@@ -12,17 +12,17 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-$sql='SELECT x.id,x.name,x.maximize FROM '.$_DB['prefix'].'sys_admin_groups AS x ORDER BY x.name';
+$sql='SELECT x.id,x.name,x.maximize FROM sys_admin_groups AS x ORDER BY x.name';
   //exit($sql);
 if($result['group']=mysqli_query($_DB['session'],$sql)) {
  while($group=$result['group']->fetch_array()) {
   $output='<div class="block" thick="'.$group['maximize'].'">';
   $output.='<div class="block-header">'.$group['name'].'</div>';
   $output.='<div class="block-content">';
-  $sql='SELECT x.name,x.file FROM '.$_DB['prefix'].'sys_admin AS x';
-  $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_access AS x0 ON x.access=x0.id AND x0.name=\'Activo\'';
+  $sql='SELECT x.name,x.file FROM sys_admin AS x';
+  $sql.=' INNER JOIN sys_admin_access AS x0 ON x.access=x0.id AND x0.name=\'Activo\'';
   if($_USER['type']!=1) # SI NO ES SUPER USUARIO
-   $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_privileges AS x1 ON x1.module=x.id AND x1.user=\''.$_USER['id'].'\'';
+   $sql.=' INNER JOIN sys_admin_privileges AS x1 ON x1.module=x.id AND x1.user=\''.$_USER['id'].'\'';
   $sql.=' WHERE x.group='.$group['id'].' ORDER BY x.name';
   //exit($sql);
   $input='';
