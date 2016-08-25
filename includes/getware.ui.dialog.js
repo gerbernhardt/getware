@@ -78,7 +78,7 @@ getware.ui.dialog={
   var output='<div id="ui-window-'+date+'" pageOrientation="'+json.pageOrientation+'">';
   // SI TIENE EL PREFIJO "getware" EJEUTA LA FUNCION COMPLETA
   // SINO LO TOMA COMO UN INDICE Y EJECUTA COMO UNA SUBFUNCION DE GETCONTENT.xxx
-  if(/getware/.test(json.append))
+  if(/\./.test(json.append))
    var append=eval(json.append+'(date,json);');
   else var append=eval('getware.ui.content.'+json.append+'(date,json);');
   /*
