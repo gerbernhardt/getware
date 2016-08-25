@@ -33,10 +33,6 @@ else exit(mysqli_error($_DB['session']));
 # SELECT LANGUAGE
 include($_SETTINGS['language'].'.php');
 
-# HTML FUNCTIONS
-include('html.php');
-$HTML=new html;
-
 # SELECT THEME
 include('themes/'.$_SETTINGS['theme'].'.php');
 $THEME=new theme;

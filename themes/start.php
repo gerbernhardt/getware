@@ -24,27 +24,40 @@ class theme {
   print '<div id="window-message"></div>';
   print '<div id="window-menu" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></div>';
 
-  print $HTML->table(970,'','',1);
-  $content=$_USER['username'].' [ '.$HTML->a('?logout','','title="'._EXIT.'!"',_LOGOUT,'normal').' ]';
-  if(!isset($_USER)) $content=' [ <a href="#" onclick="javascript:$getware.get(\'module=login&amp;ajax\');return false;">'._LOGIN.'</a> ]';
-  print $HTML->td('right','top','','','',$content);
-  print $HTML->table_close(1);
+  print '<table width="970" cellspacing="0" cellpadding="0" border="0">';
+  print '<tr>';
+  print '<td valign="top" align="right">';
+  if(!isset($_USER))
+   print ' [ <a href="#" onclick="javascript:getware.get(\'module=login&amp;ajax\');return false;">'._LOGIN.'</a> ]';
+  else print $_USER['username'].' [ <a title="'._EXIT.'" href="?logout">'._LOGOUT.'</a> ]';
+  print '</td>';
+  print '</tr>';
+  print '</table>';
 
   # INI TABLE LOGO
-  print $HTML->table(970,'','',1);
-  print $HTML->td('center','middle',300,'slogan','',$_SETTINGS['slogan']);
-  print $HTML->td('center','middle','','','',$HTML->img('images/logos/'.$_SETTINGS['logo'].'.png',$_SETTINGS['sitename'].' '.$_SETTINGS['slogan']));
-  print $HTML->table_close(1);
+  print '<table width="970" cellspacing="0" cellpadding="0" border="0">';
+  print '<tr>';
+  print '<td width="300" valign="middle" align="center" class="slogan">';
+  print $_SETTINGS['slogan'];
+  print '</td>';
+  print '<td valign="middle" align="center">';
+  print '<img title="'.$_SETTINGS['slogan'].'" src="images/logos/'.$_SETTINGS['logo'].'.png">';
+  print '</td>';
+  print '</tr>';
+  print '</table>';
   # END TABLE LOGO
 
   print '<br>';
+  
   # INI TABLE CONTENT
-  print $HTML->table(900,'','',1);
+  print '<table width="900" cellspacing="0" cellpadding="0" border="0">';
+  
   # INI CONTENT LEFT
   print '<td id="content_left" width="171" valign="top">';
   $CORE->blocks('left');
   print '<div id="progressbar"></div>';
   print '</td>';
+  
   # INI CONTENT CENTER
   print '<td id="content_center" align="center" valign="top">';
  }
@@ -53,24 +66,34 @@ class theme {
  function footer() {
   global $HTML,$index,$_SETTINGS,$_TIME;
   print '</td>';
+  
   # INI CONTENT RIGHT
   if($index==2) {
    print '<td id="content_right" width="171" valign="top">';
    $CORE->blocks('right');
    print '</td>';
   }
-  print $HTML->table_close(1);
+  print '</tr>';
+  print '</table>';
   # END TABLE CONTENT
+  
   print '<br>';
+
   # INI TABLE FOOTER
-  print $HTML->table(1000,'','',1);
-  print $HTML->td('left','middle','50%','','','&nbsp;');
+  print '<table width="1000" cellspacing="0" cellpadding="0" border="0">';
+  print '<tr>';
+  print '<td width="50%" valign="middle" align="left">&nbsp;</td>';
+  print '<td width="50%" valign="middle" align="right">';
   $search=array('/{br}/','/{year}/','/{/','/}/');
   $replace=array('<br>',date('Y'),'<','>');
-  print $HTML->td('right','middle','50%','','',preg_replace($search,$replace,$_SETTINGS['footer']).'<br>'._PAGEGENERATION_TIME.' '.$_TIME['total'].' '._SECONDS);
-  print $HTML->table_close(1);
+  print preg_replace($search,$replace,$_SETTINGS['footer']);
+  print '<br>';
+  print _PAGEGENERATION_TIME.' '.$_TIME['total'].' '._SECONDS;  
+  print '</td>';
+  print '</tr>';
+  print '</table>';
   # END TABLE FOOTER
-  print '</div>';
+  
   print '<div id="print"></div>';
   if(!isset($_GET['ajax']))
    print '<script>getware.data($(\'#content_center\').html());</script>';
@@ -87,6 +110,7 @@ class theme {
  function closetable() {
   print '</td></tr></table><br>';
  }
+
 }
 
 ?>

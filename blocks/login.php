@@ -13,17 +13,15 @@
 if(!preg_match('/index.php/', $_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 $content='<center>';
-$url=$_SETTINGS['module'];
-$id='';
-$form=$_GET['module'].'_loginform_'.date('YmdHis');
+$content.='<form enctype="multipart/form-data" method="post" action="?module=home" id="'.$_GET['module'].'_login_'.date('YmdHis').'">';
+$content.='<input type="text" autocomplete="off" class="username_block" value="" maxlength="25" size="12" name="username" id="username">';
 $content.='<br>';
-$content.=$HTML->form($url,$id,$form,'noajax').'';
-$content.=$HTML->input('username','text',12,25,'','','class=\'username_block\'');
-$content.='<br><br>';
-$content.=$HTML->input('password','password',12,25,'','','class=\'password_block\'');
-$content.='<br><br>';
-$content.=$HTML->input('','submit','','',_SEND,'','class=\'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only\'');
-$content.=$HTML->form_close();
+$content.='<br>';
+$content.='<input type="password" autocomplete="off" class="password_block" value="" maxlength="25" size="12" name="password" id="password">';
+$content.='<br>';
+$content.='<br>';
+$content.='<input type="submit" autocomplete="off" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="Enviar">';
+$content.='</form>';
 $content.='</center>';
 
 ?>
