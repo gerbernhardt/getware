@@ -13,6 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_dialog_remove{
+ 
  function save(){
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   if(function_exists('start')) start();
@@ -27,7 +28,9 @@ class kernel_dialog_remove{
 
   }
  }
- function show(){  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
+ 
+ function show(){
+  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   $CORE->secure_get('remove');$secure_index=implode(',',$_GET['remove']);
   if(!isset($_MODULE['restrict'][_REMOVE])) $_MODULE['restrict'][_REMOVE]=true;
   $sql='SELECT NULL FROM '.$_TABLE['name'].' AS x WHERE x.id IN('.$secure_index.') AND '.$_MODULE['restrict'][_REMOVE];
@@ -38,6 +41,9 @@ class kernel_dialog_remove{
    }else $KERNEL->alert('NO TIENE PRIVILEGIOS PARA ELIMINAR ESTE REGISTRO!');
   }else $KERNEL->alert('ERROR EN LA CONSULTA SQL dialog.remove.php!');
  }
+
 }
+
 $KERNEL->dialog->remove=new kernel_dialog_remove;
+
 ?>

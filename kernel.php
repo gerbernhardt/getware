@@ -132,6 +132,8 @@ function set_autocomplete($str){
 
 }
 $KERNEL=new kernel;
-$path='kernel/';$files=array('query','search','grid','dialog');eval($CORE->include_enc());
-
+include('kernel/query.php');
+include('kernel/search.php');
+include('kernel/grid.php');
+include('kernel/dialog.php'); 
 ?>

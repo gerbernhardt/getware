@@ -13,7 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 if(!isset($_USER)) {
- $CORE->login(utf8_encode('Usuario y contraseña'),true);
+ $CORE->login('Usuario y contraseña',true);
 } else {
  $THEME->opentable();
 

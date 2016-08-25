@@ -13,16 +13,18 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_dialog{
+    
  function autocomplete() {
   global $_DB,$_ADMIN,$_TABLE,$CORE,$_MODULE,$KERNEL;
   if(isset($_GET['submenu'])) {
    $x=intval($_GET['submenu']);
-   $path='kernel/dialog.';$files=array('submenu');eval($CORE->include_enc());
+   include('kernel/dialog.submenu.php');
   }elseif(isset($_GET['autocomplete'])&&isset($_GET['term'])) {
    $x=intval($_GET['autocomplete']);
-   $path='kernel/dialog.';$files=array('autocomplete');eval($CORE->include_enc());
+   include('kernel/dialog.autocomplete.php');
   }
  }
+
  # DIALOG JSON GENERATOR
  function header($sync) {
   global $_ADMIN,$_TABLE,$_MODULE;
@@ -46,6 +48,12 @@ class kernel_dialog{
  }
 
 }
+
 $KERNEL->dialog=new kernel_dialog;
-$path='kernel/dialog.';$files=array('upload','add','edit','remove','axx');eval($CORE->include_enc());
+include('kernel/dialog.upload.php');
+include('kernel/dialog.add.php');
+include('kernel/dialog.axx.php');
+include('kernel/dialog.edit.php');
+include('kernel/dialog.remove.php');
+
 ?>

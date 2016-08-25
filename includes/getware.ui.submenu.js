@@ -9,13 +9,13 @@
 // the Free Software Foundation; either version 2 of the License.
 if(!getware.ui) getware.ui={}
 getware.ui.submenu={
- get:function(window,e,module,field_filter){
-  if(field_filter!=''){
-   if(filter=$('div[id=ui-window-'+window+'] input[id='+field_filter+']').val()){
-   } else filter=$('div[id=ui-window-'+window+'] input[id='+field_filter.split('x')[0]+'x]').val();
+ get:function(window,element,module,fieldFilter){
+  if(fieldFilter!=''){
+   if(filter=$('div[id=ui-window-'+window+'] input[id='+fieldFilter+']').val()){
+   } else filter=$('div[id=ui-window-'+window+'] input[id='+fieldFilter.split('x')[0]+'x]').val();
   } else filter='\%';
-  var url='module=admin&admin='+module+'&window='+window+'&submenu='+this+'&filter='+filter;
-  url+='&term='+encodeURIComponent($('div[id=ui-window-'+window+'] input[id='+this+']').val());
+  var url='module=admin&admin='+module+'&window='+window+'&submenu='+element+'&filter='+filter;
+  url+='&term='+encodeURIComponent($('div[id=ui-window-'+window+'] input[id='+element+']').val());
   getware.get(url);
  },
  make:function(json){

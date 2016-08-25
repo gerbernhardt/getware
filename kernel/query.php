@@ -12,16 +12,20 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
 
-class kernel_query{ # EXCEL GENERATOR
+class kernel_query{
+
+ # EXCEL GENERATOR
  function excel() {
   global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE,$CORE,$sql;
   include('kernel/query.excel.php');
  }
+
  # CACHE SQL GENERATOR
  function cache() {
   global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE,$CORE,$sql;
   include('kernel/query.cache.php');
  }
+
  # SQL GENERATOR
  function make() {
   global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE,$CORE,$sql;
@@ -53,7 +57,10 @@ class kernel_query{ # EXCEL GENERATOR
   }
   $where.=' WHERE x'.$as.'.'.$row.'=xx0.id';
   return '('.$select.$join.$where.')';
- }}
+ }
+ 
+}
+
 $KERNEL->query=new kernel_query;
 
 ?>

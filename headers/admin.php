@@ -15,7 +15,7 @@ if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit
 if(!isset($_ADMIN['path']))
  $_ADMIN['path']='..'.$_SERVER['PATH'].'admin/';
 
-$path='./';$files=array('kernel');eval($CORE->include_enc()); ;
+include('./kernel.php');
 
 # NO INCLUYE EL MODULO
 $_ADMIN['file']=false;
@@ -26,7 +26,8 @@ if($result=mysqli_query($_DB['session'],$sql)){
  while($fetch=$result->fetch_array()){
   if($_USER['type']==1)
    $_ADMIN[$fetch['name']]=true;
-  else $_ADMIN[$fetch['name']]=false; }
+  else $_ADMIN[$fetch['name']]=false;
+ }
 } else $KERNEL->alert(mysql_error($_DB['session']));
 
 if(isset($_GET['admin'])&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')) {
@@ -47,8 +48,11 @@ if(isset($_GET['admin'])&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')) {
       $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_privileges_types_data AS x0 ON x0.privilege=x.id';
       $sql.=' INNER JOIN '.$_DB['prefix'].'sys_admin_privileges_types AS x1 ON x0.type=x1.id';
       $sql.=' WHERE x.user='.$_USER['id'].' AND x.module='.$fetch['module'];
-      if($result=mysqli_query($_DB['session'],$sql)){       while($fetch=$result->fetch_array()){        $_ADMIN[$fetch['name']]=true;
-       }      } else $KERNEL->alert($sql);
+      if($result=mysqli_query($_DB['session'],$sql)){
+       while($fetch=$result->fetch_array()){
+        $_ADMIN[$fetch['name']]=true;
+       }
+      } else $KERNEL->alert($sql);
      } else $KERNEL->alert(_ACCESSDENIED);
     } else $KERNEL->alert(mysql_error($_DB['session']));
    }

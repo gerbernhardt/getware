@@ -13,6 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_search{
+
  function autocomplete() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$KERNEL;
   if(isset($_GET['search'])&&isset($_GET['term'])) {
@@ -75,6 +76,7 @@ class kernel_search{
    exit(preg_replace('/(?:\s|&quot;)+/','\\"',$_MODULE['output']));
   }
  }
+
  function content() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE;
   $name='name:[';
@@ -104,7 +106,9 @@ class kernel_search{
   else $_MODULE['output']='';
   $_MODULE['output'].='{run:"getware.ui.search.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",'.$name.'],'.$size.'],'.$data.'],'.$condition.'}}';
  }
+
 }
+
 $KERNEL->search=new kernel_search;
 
 ?>

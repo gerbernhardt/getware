@@ -11,7 +11,9 @@
 # the Free Software Foundation; either version 2 of the License.
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
+
 class core {
+
  # FUNCTION SECURE_GET()
  function secure_get($index,$type='int',$separator=',',$zerofill=false){
   $_GET[$index]=explode($separator,$_GET[$index]);
@@ -23,6 +25,7 @@ class core {
    if($zerofill) $_GET[$index][$i]=str_pad((string)$_GET[$index][$i],$zerofill,'0',STR_PAD_LEFT);
   }
  }
+
  # FUNCTION SECURE_POST()
  function secure_post($index,$type='int',$separator=',') {
   $_POST[$index]=explode($separator,$_POST[$index]);
@@ -32,11 +35,13 @@ class core {
    else $_POST[$index][$i]=intval($_POST[$index][$i]);
   }
  }
+
  # FUNCTION GETDAYS
  function getdays($x) {
   $x=explode('-',$x);
   return date('d',mktime(0,0,0,$x[1]+1,0,$x[0]));
  }
+
  # FUNCTION GET_MONTHS
  function get_months($x,$y) {
   $x=explode('-',$x);
@@ -44,21 +49,6 @@ class core {
   $years=$x[0]-$y[0];
   $months=$x[1]-$y[1];
   return ($years*12)+$months;
- }
- # INCLUDE_ENC
- function include_enc() {
-  $x='for($fc=0;$fc<count($files);$fc++){';
-  $x.=' if(file_exists($path.$files[$fc].\'.obj\')){';
-//  $x.='  if($content=file($path.$files[$fc].\'.obj\',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES)){';
-  $x.='  if($content=file_get_content($path.$files[$fc].\'.obj\')){';
-  $x.='   eval(base64_decode($content));';
-  $x.='  }';
-  $x.=' }else{';
-  $x.='  include($path.$files[$fc].\'.php\');';
-//  $x.='  print $files[$fc].\'<br>\';';
-  $x.=' }';
-  $x.='}';
-  return $x;
  }
 
  function getdate($x) {
@@ -91,6 +81,7 @@ class core {
   $_DATE['back']['end']=substr($_DATE['back']['ini'],0,8).$this->getdays($_DATE['back']['ini']);
   return $_DATE;
  }
+ 
  function setint($x) {
   if(strlen($x)<1)
    return '00';
@@ -98,6 +89,7 @@ class core {
    return '0'.$x;
   else return $x;
  }
+ 
  function setdate($x) {
   if(preg_match('/\//',$x))
    $x=preg_replace('/\//','-',$x);
@@ -126,6 +118,7 @@ class core {
    else return '0000-00-00';
   } else return $x[0].'-00-00';
  }
+ 
  # FUNCTION ACCESS()
  function access($access) {
   global $_USER;
@@ -137,6 +130,7 @@ class core {
    return true;
   else return false;
  }
+ 
  # FUNCTION BLOCKS()
  function blocks($type) {
   global $_DB,$THEME,$HTML,$_SETTINGS,$_USER;
@@ -164,6 +158,7 @@ class core {
    }
   }
  }
+ 
  # ALERT JSON GENERATOR
  function alert($data,$reference=false,$module=false,$action=false,$blank=false) {
   $_MODULE['output']='[{run:"getware.ui.alert.make",';
@@ -174,6 +169,7 @@ class core {
   $_MODULE['output'].='data:"'.$data.'"}]';
   exit($_MODULE['output']);
  }
+ 
  # CONVIERTE EL ARRAY POST EN UN STRING
  # GET['POST'] X=NULL&Y=SKULL&
  # IGNORA EL POST USERNAME&&PASSWORD
@@ -185,6 +181,7 @@ class core {
     $_GET['post'].=$i.'='.$j.'&';
   }
  }
+ 
  # LOGIN JSON GENERATOR
  function login($data) {
   $_MODULE['output']='[{run:"getware.ui.login.make",';
@@ -195,6 +192,7 @@ class core {
   $_MODULE['output'].='data:"'.$data.'"}]';
   exit($_MODULE['output']);
  }
+ 
  #FUNCTION HEADER()
  function header($title) {
   global $_SETTINGS;

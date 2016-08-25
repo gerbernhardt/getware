@@ -13,44 +13,55 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_grid{
+
  function autocomplete() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   if(isset($_MODULE['grid']['edit'])&&isset($_GET['row'])&&isset($_GET['term'])) {
-   $path='kernel/grid.';$files=array('autocomplete');eval($CORE->include_enc());
+   include('kernel/grid.autocomplete.php');
   }
  }
- #
+ 
  function make_array($x) {
-  $c=array();
-  for($i=0;$i<count($x);$i++) $c[$x[$i]]=true;
-  return $c;
+  $j=array();
+  for($i=0;$i<count($x);$i++) $j[$x[$i]]=true;
+  return $j;
  }
+
  # MENU GENERATOR
  function menu() {
   global $_ADMIN,$_TABLE,$_MODULE,$CORE;
   if(!isset($_MODULE['grid']['menu'])) return false;
-  $path='kernel/grid.';$files=array('menu');eval($CORE->include_enc());
+  include('kernel/grid.menu.php');
   return '"'.htmlspecialchars('{cmd:['.$cmd.'],data:['.$data.'],img:['.$img.'],type:['.$type.'],blank:['.$blank.'],module:['.$module.']}').'"';
  }
+
  # NAVPAGE GENERATOR
  function navbar() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE;
   if(!isset($_MODULE['grid']['menu'])) return false;
-  $path='kernel/grid.';$files=array('navbar');eval($CORE->include_enc());
+  include('kernel/grid.navbar.php');
   return htmlspecialchars('{rows:'.$rows.',start:'.$start.',limit:'.$limit.'}');
  }
+
  # GRID BODY
  function content() {
-  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$sql,$KERNEL,$CORE;$path='kernel/grid.';$files=array('content');eval($CORE->include_enc());
+  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$sql,$KERNEL,$CORE;
+  include('kernel/grid.content.php');
  }
+
  # GRID BODY DROPABLE
  function content_dropable() {
-  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$sql,$CORE;$path='kernel/grid.';$files=array('content.dropable');eval($CORE->include_enc());
+  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$sql,$CORE;
+  include('kernel/grid.content.dropable.php');
  }
+
  function save() {
-  global $_DB,$CORE,$_ADMIN,$_MODULE,$_TABLE,$KERNEL,$CORE;$path='kernel/grid.';$files=array('edit.save');eval($CORE->include_enc());
+  global $_DB,$CORE,$_ADMIN,$_MODULE,$_TABLE,$KERNEL,$CORE;
+  include('kernel/grid.edit.save.php');
  }
 
 }
+
 $KERNEL->grid=new kernel_grid;
+
 ?>

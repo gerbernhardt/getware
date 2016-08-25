@@ -15,8 +15,7 @@ if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit
 
 setcookie('ajax','on',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
 $_USER=true;
-$_SERVER['KEY']='A9�S1qazL4DK3wsxedcFrfvJGH<Y5TtgbUR7?yhnIEO2WPu>jmQikM8BNCol6Vp�XZ';
-$_SERVER['YEK']='QWE>RTYUIO�ZXCVBNMqwertyuiopas<PASDFGHJKLdfgh?jkl�zxcvbnm123456789';
+
 $sql='DELETE FROM '.$_DB['prefix'].'sys_sessions AS x WHERE x.time<='.time();
 mysqli_query($_DB['session'],$sql);
 

@@ -13,17 +13,22 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_dialog_axx{
+
  function save() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
-  $path='kernel/dialog.axx.';$files=array('save');eval($CORE->include_enc());
+  include('kernel/dialog.axx.save.php');
  }
+
  function show(){
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   if(function_exists('start')) start();
   $this->save();
-  $path='kernel/dialog.axx.';$files=array('show');eval($CORE->include_enc());
+  include('kernel/dialog.axx.show.php');
  }
+
 }
+
 $KERNEL->dialog->axx=new kernel_dialog_axx;
-$path='kernel/dialog.axx.';$files=array('check');eval($CORE->include_enc());
+include('kernel/dialog.axx.check.php');
+
 ?>

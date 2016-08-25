@@ -13,16 +13,18 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_dialog_add{
+
  function save() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
-  $path='kernel/dialog.add.';$files=array('save');eval($CORE->include_enc());
+  include('kernel/dialog.add.save.php');
  }
+
  function show(){
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   if(function_exists('start')) start();
   if(!$KERNEL->restrict(_ADD)) $KERNEL->alert('NO TIENE PRIVILEGIOS PARA EDITAR ESTE REGISTRO!');
   $this->save();
-  $path='kernel/dialog.add.';$files=array('show');eval($CORE->include_enc());
+  include('kernel/dialog.add.show.php');
  }
 
  function restrict($i) {
@@ -39,6 +41,7 @@ class kernel_dialog_add{
    return eval($e);
   } else return true;
  }
+
  #
  # ENVIA EL JSON CON LOS DATOS INCORRECTOS
  #
@@ -63,6 +66,9 @@ class kernel_dialog_add{
    exit($_MODULE['output']);
   else return true;
  }
+ 
 }
+
 $KERNEL->dialog->add=new kernel_dialog_add;
+
 ?>
