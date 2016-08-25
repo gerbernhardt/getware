@@ -2,7 +2,7 @@
 
 #
 # Getware: Ultra-Secure Script
-# Filename: search.php, 2012/04/03
+# Filename: kernel/search.php, 2012/04/03
 # Copyright (c) 2010 - 2012 by German Bernhardt
 # E-mail: <german.bernhardt@gmail.com>
 #
