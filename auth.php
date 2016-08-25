@@ -12,26 +12,14 @@
 #
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-if(isset($_GET['ajaxoff'])) {
- $links='off';
- setcookie('ajax','off',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
-} elseif(isset($_GET['ajaxon'])) {
- $links='ajax';
- setcookie('ajax','on',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
-} elseif(isset($_COOKIE['ajax'])) { # $_COOKIE
- if($_COOKIE['ajax']=='off') {
-  $links='off';
-  setcookie('ajax','off',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
- } elseif($_COOKIE['ajax']=='on') {
-  $links='ajax';
-  setcookie('ajax','on',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
- }
-}
+
+setcookie('ajax','on',(time()+(3600*24*30)),$_SERVER['PATH'],'',0);
 $_USER=true;
-$_SERVER['KEY']='A9ÑS1qazL4DK3wsxedcFrfvJGH<Y5TtgbUR7?yhnIEO2WPu>jmQikM8BNCol6VpñXZ';
-$_SERVER['YEK']='QWE>RTYUIOÑZXCVBNMqwertyuiopas<PASDFGHJKLdfgh?jklñzxcvbnm123456789';
+$_SERVER['KEY']='A9ï¿½S1qazL4DK3wsxedcFrfvJGH<Y5TtgbUR7?yhnIEO2WPu>jmQikM8BNCol6Vpï¿½XZ';
+$_SERVER['YEK']='QWE>RTYUIOï¿½ZXCVBNMqwertyuiopas<PASDFGHJKLdfgh?jklï¿½zxcvbnm123456789';
 $sql='DELETE FROM '.$_DB['prefix'].'sys_sessions AS x WHERE x.time<='.time();
 mysqli_query($_DB['session'],$sql);
+
 function login() {
  global $_DB,$_USER;
  $_TIME=time()+(3600*24);
@@ -56,6 +44,7 @@ function login() {
   } else return false;
  } else return false;
 }
+
 function session() {
  global $_DB,$_USER;
  $sql='SELECT x.* FROM '.$_DB['prefix'].'sys_sessions AS x';
@@ -98,7 +87,8 @@ if(isset($_GET['logout'])&&isset($_USER['id'])) {
 }
 if(!isset($_USER['id'])){
  unset($_USER);
-}else{ mysqli_query($_DB['session'],'SET @user='.$_USER['id']);
+}else{
+ mysqli_query($_DB['session'],'SET @user='.$_USER['id']);
  mysqli_query($_DB['session'],'SET @userLog=1');
 }
 
