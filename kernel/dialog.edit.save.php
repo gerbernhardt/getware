@@ -16,7 +16,7 @@ if(isset($_GET['save'])) {
  mysqli_query($_DB['session'],'SET @clone_val=0'); # @PARENT_ID REGISTRO PADRE INSERTADO PARENT_ID=33
  if(!is_array($_GET['edit'])) intval($_GET['edit']);
 
- $_MODULE['output']='[{run:"$getware.ui.content.info.edit",window:"'.$_POST['window'].'",';
+ $_MODULE['output']='[{run:"getware.ui.content.info.edit",window:"'.$_POST['window'].'",';
  $rows='';
  $data='';
  for($i=$_ADMIN['ini'];$i<$_ADMIN['end'];$i++) {
@@ -71,16 +71,20 @@ if(isset($_GET['save'])) {
    $sql.=' SET x.'.$_TABLE['column']['name'][$i].'=x0.id';
    $sql.=' WHERE x.id='.$_GET['edit'];
    //$KERNEL->alert($sql);
-  }elseif($_TABLE['column']['function'][$i]=='REFERENCES') {  #
+  }elseif($_TABLE['column']['function'][$i]=='REFERENCES') {
+  #
   # MULTIPLEX  SELECT DIMENSIONAL
   #
    #afiliados_sexos#afiliado#sexo#sexos
    $table=explode('#',$_TABLE['column']['comment'][$i][0]);
-   $sql='DELETE FROM '.$table[0].' WHERE '.$table[1].'='.$_GET['edit'];   mysqli_query($_DB['session'],$sql);
+   $sql='DELETE FROM '.$table[0].' WHERE '.$table[1].'='.$_GET['edit'];
+   mysqli_query($_DB['session'],$sql);
    if(is_array($_POST[$i])){
     $sql='INSERT INTO '.$table[0].' (`'.$table[1].'`,`'.$table[2].'`) VALUES ';
-    for($j=0;$j<count($_POST[$i]);$j++) {     $sql.='('.$_GET['edit'].',(SELECT xx.id FROM '.$table[3].' AS xx WHERE xx.'.$_TABLE['column']['comment'][$i][1].'="'.$_POST[$i][$j].'"))';
-     if($j<count($_POST[$i])-1) $sql.=',';    }
+    for($j=0;$j<count($_POST[$i]);$j++) {
+     $sql.='('.$_GET['edit'].',(SELECT xx.id FROM '.$table[3].' AS xx WHERE xx.'.$_TABLE['column']['comment'][$i][1].'="'.$_POST[$i][$j].'"))';
+     if($j<count($_POST[$i])-1) $sql.=',';
+    }
    }
   } else {
    #
@@ -91,14 +95,15 @@ if(isset($_GET['save'])) {
    $sql.=' WHERE x.id='.$_GET['edit'];
   }
   $rows.=$i;
-  if(!mysqli_query($_DB['session'],$sql)){   $data.='-1';/*$KERNEL->alert(mysqli_error().'<br>'.$sql);*/ // NO CUMPLE LA CONDICION
+  if(!mysqli_query($_DB['session'],$sql)){
+   $data.='-1';/*$KERNEL->alert(mysqli_error().'<br>'.$sql);*/ // NO CUMPLE LA CONDICION
   }else $data.=mysqli_affected_rows($_DB['session']);
   if($i<count($_TABLE['column']['name'])-1) {
    $rows.=',';$data.=',';
   }
  }
  $_MODULE['output'].='rows:['.$rows.'],data:['.$data.']},';
- $_MODULE['output'].='{run:"$getware.ui.alert.make",reference:"'.$_POST['window'].'",';
+ $_MODULE['output'].='{run:"getware.ui.alert.make",reference:"'.$_POST['window'].'",';
  if(function_exists('dialog_after_edit'))
   $_MODULE['output'].=dialog_after_edit().',';
  $_MODULE['output'].='data:"DATOS GUARDADOS!"}]';

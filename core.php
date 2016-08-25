@@ -258,6 +258,7 @@ class core {
   $output.='</head>';
   return $output;
  }
+ 
 }
 
 ?>

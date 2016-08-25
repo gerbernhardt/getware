@@ -13,6 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel{
+
  # TABLE ANALIZER
  function table() {
   global $_ADMIN,$_TABLE,$_DB;
@@ -131,9 +132,11 @@ function set_autocomplete($str){
  }
 
 }
+
 $KERNEL=new kernel;
 include('kernel/query.php');
 include('kernel/search.php');
 include('kernel/grid.php');
 include('kernel/dialog.php'); 
+
 ?>

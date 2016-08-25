@@ -13,7 +13,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 # COVIERTE LA VARIABLES PRINCIPALES EN NUMEROS ENTEROS
-$index=array('id','print','make','pay');
+$index=array('id','print','make');
 $simple=array('remove'=>true);
 for($i=0;$i<count($index);$i++) {
  # SI LA VARIABLE NO ES UN ARRAY EJ: ID[]=1&ID[]=2
@@ -29,9 +29,7 @@ for($i=0;$i<count($index);$i++) {
 function specialchars($x) {
  return htmlspecialchars($x,ENT_QUOTES);
 }
-function utf8($x) {
- return utf8_encode($x);
-}
+
 # CONVIERTE TODOS LOS CARACTERES
 # A HTML MENOS LOS ESPACIOS.-
 function encodeHTML($x) {
@@ -42,6 +40,7 @@ function encodeHTML($x) {
  }
  return $x;
 }
+
 $_GET=encodeHTML($_GET);
 $_POST=encodeHTML($_POST);
 $_SERVER=encodeHTML($_SERVER);
