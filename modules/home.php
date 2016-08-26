@@ -12,7 +12,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 $THEME->opentable();
-print '<div align="center" valign="top"><img src="images/home.png"></div>';
+print '<div align="center" valign="top"><img src="images/logos/home.png"></div>';
 $THEME->closetable();
 
 ?>
