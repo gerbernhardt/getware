@@ -12,6 +12,6 @@ Login
 
 > Password: root
 
-bla bla bla...
+####bla bla bla...
 
-[hola mundo!]www.3x.org
+![hola mundo test]www.3x.org
