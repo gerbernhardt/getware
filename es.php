@@ -77,5 +77,6 @@ define('_SETTINGS','Preferencias');
 define('_UNKWON','Desconocido');
 define('_UPLOAD','Cargar');
 define('_USER','Usuario');
+define('_VIEW','ver');
 
 ?>
