@@ -48,7 +48,7 @@ INSERT INTO `sys_admin` (`id`, `name`, `file`, `access`, `group`) VALUES
 (5, 'Settings', 'sys_settings', 1, 1),
 (6, 'Services', 'sys_services', 1, 1),
 (7, 'Blocks', 'sys_blocks', 1, 1),
-(8, 'General', 'general', 1, 2);
+(8, 'General', 'hello_world', 1, 2);
 
 -- --------------------------------------------------------
 
