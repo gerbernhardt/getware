@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `sys_settings` (
 --
 
 INSERT INTO `sys_settings` (`id`, `sitename`, `slogan`, `keywords`, `url`, `email`, `logo`, `date`, `language`, `theme`, `footer`, `module`, `description`) VALUES
-(1, 'GETWARE', 'Sistema de Administracion', 'getware, ultra-secure', 'https://github.com/gerbernhardt', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'start', 'Copyright {year} {a href=http://github.com/gerbernhardt}Getware{/a}{br}Autor: {a href=mailto://german.bernhardt@gmail.com}German Bernhardt{/a}', 'home', 'Sistema para administracion de empresas y contenidos web.');
+(1, 'GETWARE', 'Keep It Simple, Stupid!', 'getware, Keep It Simple, Stupid!', 'https://github.com/gerbernhardt', 'german.bernhardt@gmail.com', 'logo', '2004-04-15', 'es', 'start', 'Copyright {year} {a href=http://github.com/gerbernhardt}Getware{/a}{br}Autor: {a href=mailto://german.bernhardt@gmail.com}German Bernhardt{/a}{br}{a href=https://github.com/gerbernhardt}github.com/gerbernhardt{/a}', 'home', 'Sistema para administracion de empresas y contenidos web.');
 
 -- --------------------------------------------------------
 
