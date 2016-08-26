@@ -424,9 +424,7 @@ CREATE TABLE IF NOT EXISTS `sys_users` (
 --
 
 INSERT INTO `sys_users` (`id`, `username`, `password`, `type`, `access`) VALUES
-(1, 'root', '63a9f0ea7bb98050796b649e85481845', 1, 1),
-(2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 2, 1),
-(3, 'mrb', '13eed552a284d37f230c63de3263cf9b', 1, 1);
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 1, 1);
 
 --
 -- Disparadores `sys_users`

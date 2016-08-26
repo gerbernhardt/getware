@@ -1,15 +1,14 @@
 <?php
-
-#
-# Getware: Ultra-Secure Script
-# Filename: headers/login.php, 2010/08/05
-# Copyright (c) 2004 - 2011 by German Bernhardt
-# E-mail: <german.bernhardt@gmail.com>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License.
-#
+/*
+ * Keep It Simple, Stupid!
+ * Filename: headers/login.php
+ * by German Bernhardt
+ * E-mail: <german.bernhardt@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License.
+ */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 $_TABLE['column']['size']=array(0=>11,1=>25,2=>40,3=>1);
 $_TABLE['column']['name']=array(0=>'id',1=>'username',2=>'password',3=>'privilege');

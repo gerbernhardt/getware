@@ -1,12 +1,13 @@
-//
-// Getware: Ultra-Secure Script
-// Filename: includes/getware.ui.menu.js, 2012/04/03
-// Copyright (c) 2012 by German Bernhardt
-// E-mail: <german.bernhardt@gmail.com>
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License.
+/*
+ * Keep It Simple, Stupid!
+ * Filename: includes/getware.ui.menu.js
+ * by German Bernhardt
+ * E-mail: <german.bernhardt@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License.
+ */
 if(!getware.ui) getware.ui={}
 getware.ui.menu={
  debug:false,

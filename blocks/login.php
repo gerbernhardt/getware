@@ -1,15 +1,14 @@
 <?php
-
-#
-# Getware: Ultra-Secure Script
-# Filename: blocks/login.php, 2004/08/18
-# Copyright (c) 2004 - 2011 by German Bernhardt
-# E-mail: <german.bernhardt@gmail.com>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License.
-#
+/*
+ * Keep It Simple, Stupid!
+ * Filename: blocks/login.php
+ * by German Bernhardt
+ * E-mail: <german.bernhardt@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License.
+ */
 if(!preg_match('/index.php/', $_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 $content='<center>';
