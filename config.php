@@ -15,11 +15,10 @@ if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit
 ini_set('display_errors','On');
 date_default_timezone_set('America/Cordoba');
 setlocale(LC_ALL,'es_ES');
-$links='ajax';
-$_SERVER['PATH']=preg_replace('/index.php/','',$_SERVER['PHP_SELF']);
 
-$_DB=array('host'=>'localhost','user'=>'root','pass'=>'','name'=>'getware_getware');
 $_SERVER['PATH']='/getware/';
+$_DB=array('host'=>'localhost','user'=>'root','pass'=>'','name'=>'getware');
+
 
 $_DB['session']=mysqli_connect($_DB['host'],$_DB['user'],$_DB['pass'],$_DB['name']);
 if(mysqli_connect_errno($_DB['session']))
