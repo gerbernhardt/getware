@@ -54,6 +54,7 @@ define('_NEXT','Siguiente');
 define('_NOFOUND','No encontrado!');
 define('_NONE','Ninguno');
 define('_NOUSERS','Solo invitados');
+define('_OPERATOR','Operador');
 define('_PAGEGENERATION_SQL','Pagina generada con');
 define('_PAGEGENERATION_TIME','Pagina generada en');
 define('_PASSWORD','Password');
