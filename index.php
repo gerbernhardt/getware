@@ -41,7 +41,7 @@ $THEME=new theme;
 include('core.php');
 $CORE=new core;
 
-# RUN DEMONS
+# RUN SERVICES
 include('services.php');
 
 # SELECT HEADER MODULE
