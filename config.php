@@ -17,7 +17,7 @@ date_default_timezone_set('America/Cordoba');
 setlocale(LC_ALL,'es_ES');
 
 $_SERVER['PATH']='/getware/';
-$_DB=array('host'=>'localhost','user'=>'root','pass'=>'','name'=>'getware');
+$_DB=array('host'=>'127.0.0.1','user'=>'root','pass'=>'','name'=>'getware');
 
 $_DB['session']=mysqli_connect($_DB['host'],$_DB['user'],$_DB['pass'],$_DB['name']);
 if(mysqli_connect_errno($_DB['session']))

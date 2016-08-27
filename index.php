@@ -14,8 +14,9 @@
 $_TIME['init']=explode(' ',microtime());
 $_TIME['init']=$_TIME['init'][0]+$_TIME['init'][1];
 
+$config=explode('/',$_SERVER['REQUEST_URI']);
 # INCLUDE DATABASE CONFIGURATION
-include('config.php');
+include('../'.$config[1].'/config.php');
 
 # INCLUDE SECURITY OPTIONS
 include('security.php');

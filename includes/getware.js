@@ -102,7 +102,7 @@ var getware={
   $.ajax({
    async:async,// ES FALSE PARA QUE NO SE CREEN CONFLICTOS EN EL ID DE LAS VENTANAS
    type:'POST',
-   dataType:'text', // SI NO ESPECIFICO HTML CUANDO DEVUELVE EN JSON DA ERRROR ENVES DE SUCCESS!
+   dataType:'text', // SI NO ESPECIFICO HTML CUANDO DEVUELVE EN JSON DA ERRROR!
    contentType:'application/x-www-form-urlencoded',
    url:url,
    data:data,
