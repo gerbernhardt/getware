@@ -110,8 +110,18 @@ getware.ui.grid={
   });
  },
  make:function(json){
-  // TOMA EL DATE UI DEL SEARCH.MAKE() QUE SE GENERA ANTERIORMENTE
-  date=getware.ui.date;
+  // TOMA EL DATE UI DEL SEARCH.MAKE()
+  // QUE SE GENERA ANTERIORMENTE PARA
+  // QUE TENGA CONECTIVIDAD CON EL NAVBAR
+  // SI NO EXISTE LOS CREA!
+  if(getware.ui.date){
+   date=getware.ui.date;
+  }else{
+   var date=new Date();
+   date=date.getTime();
+   getware.ui.date=date;
+  }
+  
   var output=getware.table.open();
   output+='<div grid="'+date+'">';
   /*
