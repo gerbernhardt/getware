@@ -82,7 +82,9 @@ if(!isset($_TABLE['column']['comment'][$x])) {
  }
  if(isset($_MODULE['submenu']['join'][$x]))
   $sql.=$_MODULE['submenu']['join'][$x];
- $sql.=' WHERE '.$field.' LIKE \'%'.$_GET['term'].'%\'';
+ if(isset($_MODULE['submenu']['where'][$x]))
+  $sql.=$_MODULE['submenu']['where'][$x];
+ else $sql.=' WHERE '.$field.' LIKE \'%'.$_GET['term'].'%\'';
 
  if(isset($_MODULE['submenu'][$x])){
   for($i=0;$i<count($_MODULE['submenu'][$x]);$i++){
@@ -90,7 +92,6 @@ if(!isset($_TABLE['column']['comment'][$x])) {
   }
  }
  $sql.=' ORDER BY '.$field.' LIMIT 20';
- //exit($sql);
  if($result=mysqli_query($_DB['session'],$sql)) {
   for($i=0;$fetch=$result->fetch_array();$i++) {
    $value=$fetch[0];

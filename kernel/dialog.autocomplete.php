@@ -73,7 +73,10 @@ if(!isset($_TABLE['column']['comment'][$x])) {
 
  if(isset($_MODULE['submenu']['join'][$x]))
   $sql.=$_MODULE['submenu']['join'][$x];
- $sql.=' WHERE '.$field.' LIKE \'%'.$_GET['term'].'%\'';
+ 
+ if(isset($_MODULE['submenu']['where'][$x]))
+  $sql.=$_MODULE['submenu']['where'][$x];
+ else $sql.=' WHERE '.$field.' LIKE \'%'.$_GET['term'].'%\''; 
 
  if(isset($_MODULE['submenu'][$autocomplete])){
   for($i=0;$i<count($_MODULE['submenu'][$autocomplete]);$i++){
