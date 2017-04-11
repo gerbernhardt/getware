@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `sys_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL DEFAULT '',
-  `file` varchar(100) NOT NULL DEFAULT '' COMMENT 'FILE(admin.php)',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `file` varchar(255) NOT NULL DEFAULT '' COMMENT 'FILE(admin.php)',
   `access` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'REFERENCE(sys_admin_access.name)',
   `group` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'REFERENCE(sys_admin_groups.name)',
   PRIMARY KEY (`id`),

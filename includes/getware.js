@@ -134,11 +134,19 @@ var getware={
    url:url,
    type:'POST',
    data:formData,
+   async:false,
    //necesario para subir archivos via ajax
    cache:false,
    contentType:false,
    processData:false,
-   beforeSend:function(){message='Subiendo el archivo, por favor espere...';},
+   
+    beforeSend: function() {
+       $('#progressbar').html('SUBIENDO....').css('display','block');
+    },
+    //uploadProgress: function(event, position, total, percentComplete) {$('#progressbar').html('# ' + percentComplete + ' %').css('display','block');},
+    //complete: function(xhr) {status.html(xhr.responseText);}   
+
+
    success:function(data){getware.data(data);},
    error:function(){message='Ha ocurrido un error.';}
   });

@@ -96,6 +96,7 @@ class kernel{
 function set_autocomplete($str){
  $str=str_replace('\n','',$str);
  $str=str_replace('&quot;','\\"',$str);
+ $str=str_replace('&amp;','&',$str);
  return $str;
 }
  # JSON PRINT

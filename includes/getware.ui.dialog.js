@@ -15,7 +15,7 @@ getware.ui.dialog={
   var x=$('div[id=ui-window-'+form+']').find('textarea,input[type!=button],select').each(function(){
    if(this.type!='checkbox'||this.checked==true){
     if(this.type=='select-multiple'){ //SELECT
-     if(/x/.test(this.id)){ // ADDXX
+     if(/x/.test(this.id)){ // AXX
       split=this.id.split('x');
       post=split[0]+'['+split[1]+'][]';
      }else{
@@ -60,7 +60,7 @@ getware.ui.dialog={
    action='add=save'; // SI EXISTE ID EDIT FUNCTION
   }else if(json.append=='uxx'){
    action='upload='+json.id+'&save';
-  }else if(json.append=='query'){
+  }else if(json.append=='query'||json.append=='qxx'){
    if(json.query)
     action=json.query;
    else action='query=run'; // SI EXISTE ID EDIT FUNCTION
@@ -79,7 +79,7 @@ getware.ui.dialog={
   var output='<div id="ui-window-'+date+'" pageOrientation="'+json.pageOrientation+'">';
   // SI ENCUENTRA UN PUNTO "." EJECUTA
   // -> myProject.myModule.myAppend(date,json)
-  // else: getware.getware.ui.content.edit(date,json)       
+  // else: getware.getware.ui.content.edit(date,json)
   if(/\./.test(json.append))
    var append=eval(json.append+'(date,json);');
   else var append=eval('getware.ui.content.'+json.append+'(date,json);');

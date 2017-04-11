@@ -11,8 +11,10 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-if($_ADMIN['file']==true&&file_exists($_ADMIN['path'].$_GET['admin'].'.php'))
- include($_ADMIN['path'].$_GET['admin'].'.php');
-else $CORE->alert(_ACCESSDENIED);
+if($_ADMIN['file']==true&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')){
+    include($_ADMIN['path'].$_GET['admin'].'.php');
+} else {
+    $CORE->alert(_ACCESSDENIED);
+}
 
 ?>

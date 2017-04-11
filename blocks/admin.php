@@ -11,10 +11,10 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-$sql='SELECT x.id,x.name,x.maximize FROM sys_admin_groups AS x ORDER BY x.name';
+$sqlx='SELECT x.id,x.name,x.maximize FROM sys_admin_groups AS x ORDER BY x.name';
   //exit($sql);
-if($result['group']=mysqli_query($_DB['session'],$sql)) {
- while($group=$result['group']->fetch_array()) {
+if($result_group=mysqli_query($_DB['session'],$sqlx)) {
+ while($group=$result_group->fetch_array()) {
   $output='<div class="block" thick="'.$group['maximize'].'">';
   $output.='<div class="block-header">'.$group['name'].'</div>';
   $output.='<div class="block-content">';
@@ -25,8 +25,8 @@ if($result['group']=mysqli_query($_DB['session'],$sql)) {
   $sql.=' WHERE x.group='.$group['id'].' ORDER BY x.name';
   //exit($sql);
   $input='';
-  if($result['admin']=mysqli_query($_DB['session'],$sql)) {
-   while($admin=$result['admin']->fetch_array()) {
+  if($result_admin=mysqli_query($_DB['session'],$sql)) {
+   while($admin=$result_admin->fetch_array()) {
     $input.=$dot.'<a href="#" onclick="javascript:getware.get(\'module=admin&amp;admin='.$admin['file'].'\');">'.$admin['name'].'</a><br>';
    }
   }

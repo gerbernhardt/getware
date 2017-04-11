@@ -60,7 +60,10 @@ if(isset($_GET['admin'])&&file_exists($_ADMIN['path'].$_GET['admin'].'.php')) {
   } else $KERNEL->alert(_MODULEINACTIVE);
  } else $KERNEL->alert(mysql_error($_DB['session']));
 }
+
 # INCLUYE LA FUNCIONES DEL MODULO
-if($_ADMIN['file']==true&&file_exists($_ADMIN['path'].'functions/'.$_GET['admin'].'.php'))
- include($_ADMIN['path'].'functions/'.$_GET['admin'].'.php');
+if($_ADMIN['file']==true&&file_exists($_ADMIN['path'].'functions/'.$_GET['admin'].'.php')) {
+    include($_ADMIN['path'].'functions/'.$_GET['admin'].'.php');
+}
+
 ?>
