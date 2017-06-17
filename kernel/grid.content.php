@@ -11,11 +11,17 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
 
-if(!isset( $_MODULE['output'])) {
- $_MODULE['output']='';$append='false';
-} else {$_MODULE['output'].=',';$append='true';}
-if(isset($_MODULE['grid']['edit'])) $_MODULE['grid']['edit']=$this->make_array($_MODULE['grid']['edit']);
-$_MODULE['output'].='{run:"getware.ui.grid.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",append:"'.$append.'",';
+if(!isset($_MODULE['output'])) {
+    $_MODULE['output']='';
+    $append='false';
+} else {
+    $_MODULE['output'].=',';
+    $append='true';
+}
+if(isset($_MODULE['grid']['edit']))
+    $_MODULE['grid']['edit']=$this->make_array($_MODULE['grid']['edit']);
+
+$_MODULE['output'] .= '{run:"getware.ui.grid.make",module:"' . $_GET['admin'] . '",window:"td[id=content_center]",append:"' . $append . '",';
 
 $type='content_center';
 $_MODULE['output'].='title:"'.strtoupper($_MODULE['title']).'",';

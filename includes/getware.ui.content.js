@@ -44,12 +44,12 @@ getware.ui.content={
  },
  info:{
   grid:function(json){
-   var x='';
-   var image=['error','none','success'];
-   for(i=0;i<json.rows.length;i++){
-    x=$('div[id=overflow-c-'+json.window+'] input[id='+json.rows[i]+'-'+json.window+']');
-    if(json.data[i]>0) json.data[i]=1;
-    x.parent().parent().find('input[type=text]').css('background','url(\'./images/input_'+image[json.data[i]]+'.png\')');
+   var x = '';
+   var image = ['error', 'none', 'success'];
+   for(i=0; i < json.rows.length; i++) {
+    x = $('div[id=overflow-c-' + json.window + '] input[id=' + json.rows[i] + '-' + json.window + ']');
+    json.data[i] += 1;
+    x.parent().parent().find('input[type=text]').css('background','url(\'./images/input_' + image[json.data[i]] + '.png\')');
    }
   },
   edit:function(json){
