@@ -12,21 +12,27 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 # COVIERTE LA VARIABLES PRINCIPALES EN NUMEROS ENTEROS
-$index=array('id','print','make');
-$simple=array('remove'=>true);
-for($i=0;$i<count($index);$i++) {
- # SI LA VARIABLE NO ES UN ARRAY EJ: ID[]=1&ID[]=2
- if(isset($_GET[$index[$i]])&&!is_array($_GET[$index[$i]])) {
-  $_GET[$index[$i]]=explode(',',$_GET[$index[$i]]);
-  for($j=0;$j<count($_GET[$index[$i]]);$j++)
-   $_GET[$index[$i]][$j]=intval($_GET[$index[$i]][$j]);
-  if(count($_GET[$index[$i]])==1||isset($simple[$index[$i]]))
-   $_GET[$index[$i]]=$_GET[$index[$i]][0];
- }
+$index = array('id', 'print', 'make');
+$simple = array('remove'=>true);
+for($i = 0; $i < count($index); $i++) {
+  # SI LA VARIABLE NO ES UN ARRAY EJ: ID[]=1&ID[]=2
+  if(isset($_GET[$index[$i]]) && !is_array($_GET[$index[$i]])) {
+    if($_GET[$index[$i]] != 'save') {
+      $_GET[$index[$i]] = explode(',', $_GET[$index[$i]]);
+
+      for($j = 0; $j < count($_GET[$index[$i]]); $j++) {
+        $_GET[$index[$i]][$j]=intval($_GET[$index[$i]][$j]);
+      }
+      
+      if(count($_GET[$index[$i]]) == 1 || isset($simple[$index[$i]])) {
+        $_GET[$index[$i]] = $_GET[$index[$i]][0];
+      }
+    }
+  }
 }
 
 function specialchars($x) {
- return htmlspecialchars($x,ENT_QUOTES);
+ return htmlspecialchars($x, ENT_QUOTES);
 }
 
 # CONVIERTE TODOS LOS CARACTERES

@@ -12,7 +12,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 if(!isset($_USER)) {
- $CORE->login('Usuario y contraseña',true);
+    $CORE->login('Autentificacion', true);
 } else {
  $THEME->opentable();
 
@@ -33,8 +33,7 @@ if(!isset($_USER)) {
   print '</tr>';
   print '</table>';
  }
- 
- print '<input type="submit" autocomplete="off" class="submit" value="Guardar" maxlength="" size="" name="" id="">';
+ print '<a href="#" onclick="javascript:getware.get(\'module=login\',getware.form(\'login\'));"><button onclick="" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Guardar</span></button></a>';
  print '</form>';
  print '</td>';
  print '</tr>';

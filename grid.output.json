@@ -1,0 +1,43 @@
+[
+    {
+        run:"getware.ui.search.make",
+        module:"compras~ordenes_de_compra",
+        window:"td[id=content_center]",
+        name:["NUMERO","PROVEEDOR","PEDIDO","DESCUENTO","CONDICIONES","DESCRIPCION","USUARIO","FECHA"],
+        size:["10","10","10","10","20","30","10","10"],
+        data:["","","","","","","",""],
+        filter:["","","","","","","",""],
+        condition:{}
+    },
+    {
+        run:"getware.ui.grid.make",
+        module:"compras~ordenes_de_compra",
+        window:"td[id=content_center]",
+        append:"true",
+        title:"COMPRAS > ORDENES DE COMPRA",
+        menu:{
+                cmd:["edit","print","make[validar]"],
+                data:["Editar","Imprimir","Validar Orden de Compra"],
+                img:["edit","print","make"],
+                type:[false,false,false],
+                blank:[false,false,false],
+                module:[false,false,"compras~ordenes_de_compra"]
+            },
+        navbar:{rows:2,start:0,limit:20},
+        columns:[
+                {name:"Numero",field:"id",align:"right",edit:0,width:70},
+                {name:"Proveedor",field:"proveedor",edit:0,width:100},
+                {name:"Pedido",field:"pedido",edit:0,width:70},
+                {name:"Descuento",field:"descuento",align:"right",edit:0,width:50},
+                {name:"Condiciones",field:"condiciones",edit:0,width:250},
+                {name:"Descripcion",field:"descripcion",edit:0,width:400},
+                {name:"Usuario",field:"usuario",edit:0,width:100},
+                {name:"Fecha",field:"fecha",edit:0,width:150}
+            ],
+        data:[
+                ["000002","000002","CACHO GARAY","000001","0.00","efectivo","ninguna","mrb","2020-03-20 16:14:44"],
+                ["000001","000001","CONTRULUZ","000001","0.00","efectivo","ninguna","mrb","2020-03-20 16:14:44"]
+            ]
+    }
+]
+

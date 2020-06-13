@@ -12,15 +12,15 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 # PHP DISPLAY ERRORS CONFIG
-ini_set('display_errors','On');
+ini_set('display_errors', 'On');
 date_default_timezone_set('America/Cordoba');
-setlocale(LC_ALL,'es_ES');
+setlocale(LC_ALL, 'es_ES');
 
-$_SERVER['PATH']='/getware/';
-$_DB=array('host'=>'127.0.0.1','user'=>'root','pass'=>'','name'=>'getware');
+$_SERVER['PATH'] = '/getware/';
+$_DB = array('host'=>'127.0.0.1', 'user'=>'root', 'pass'=>'', 'name'=>'getware');
 
-$_DB['session']=mysqli_connect($_DB['host'],$_DB['user'],$_DB['pass'],$_DB['name']);
+$_DB['session'] = mysqli_connect($_DB['host'], $_DB['user'], $_DB['pass'], $_DB['name']);
 if(mysqli_connect_errno($_DB['session']))
- exit(mysqli_connect_error($_DB['session']));
+    exit(mysqli_connect_error($_DB['session']));
 
 ?>

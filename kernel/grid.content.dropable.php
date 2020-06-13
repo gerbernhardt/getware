@@ -18,6 +18,9 @@ if(isset($_MODULE['grid']['edit'])) $_MODULE['grid']['edit']=$this->$this->make_
 $_MODULE['output'].='{run:"$getGridDropable.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",append:"'.$append.'",';
 
 $type='content_center';
+$pattern = array('/-/', '/_/');
+$replacement = array(' > ', ' ');
+if(!isset($_MODULE['title'])) $_MODULE['title'] = preg_replace($pattern, $replacement, $_TABLE['name']);
 $_MODULE['output'].='title:"'.strtoupper($_MODULE['title']).'",';
 $_MODULE['output'].='menu:'.$this->$this->menu().',';
 # INIT TITLE

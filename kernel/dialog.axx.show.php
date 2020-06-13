@@ -38,7 +38,7 @@ if($_GET['add']!='save') {
      $field=$_TABLE['column']['comment'][$i][1];
      $table=explode('#',$_TABLE['column']['comment'][$i][0]);
      // NO SELECT
-     $sql='SELECT '.$field.' FROM '.$table[3].' AS x';
+     $sql='SELECT '.$field.' FROM `'.$table[3].'` AS x';
      if($result['i']=mysqli_query($_DB['session'],$sql)) {
       while($fetch['i']=mysqli_fetch_array($result['i'])){
        $data_not_select[]='"'.$fetch['i'][0].'"';
@@ -46,7 +46,6 @@ if($_GET['add']!='save') {
      } else $KERNEL->alert(mysqli_error($_DB['session']));
      $data.='[[],['.implode(',',$data_not_select).']]';
   }else $data.='""';
-
   if(isset($_MODULE['submenu']['filter'][$_TABLE['column']['name'][$i]])){
    $x=$_MODULE['submenu']['filter'][$_TABLE['column']['name'][$i]];
    $filter.='"'.$_TABLE['column']['eman'][$x].'"';
@@ -60,7 +59,9 @@ if($_GET['add']!='save') {
    $filter.=',';
   }
  }
- $_MODULE['output'].=$name.'],'.$type.'],'.$size.'],'.$data.'],'.$filter.']}';
+
+ if(!isset($_MODULE['add'])) $_MODULE['add'] = '';
+ $_MODULE['output'].=$name.'],'.$type.'],'.$size.'],'.$data.'],'.$filter.']' . $_MODULE['add'] . '}';
  $KERNEL->json_print($_MODULE['output']);
  exit();
 }

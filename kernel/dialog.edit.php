@@ -29,7 +29,7 @@ class kernel_dialog_edit{
    $CORE->secure_get('edit');$secure_index=implode(',',$_GET['edit']);
   }
   if(!isset($_MODULE['restrict'][_EDIT])) $_MODULE['restrict'][_EDIT]=true;
-  $sql='SELECT NULL FROM '.$_TABLE['name'].' AS x WHERE x.id IN('.$secure_index.') AND '.$_MODULE['restrict'][_EDIT];
+  $sql='SELECT NULL FROM `'.$_TABLE['name'].'` AS x WHERE x.id IN('.$secure_index.') AND '.$_MODULE['restrict'][_EDIT];
   if($result=mysqli_query($_DB['session'],$sql)){
    if(mysqli_num_rows($result)==count($_GET['edit'])){
     unset($result);

@@ -19,7 +19,7 @@ class kernel_dialog_remove{
   if(isset($_GET['remove'])) {
    if(!is_array($_GET['remove'])) $CORE->secure_get('remove');
    //$KERNEL->alert('Desea eliminar '.count($_GET['remove']).' registro/s?');
-   $sql='DELETE x.* FROM '.$_TABLE['name'].' AS x WHERE x.id IN('.implode(',',$_GET['remove']).')';
+   $sql='DELETE x.* FROM `'.$_TABLE['name'].'` AS x WHERE x.id IN('.implode(',',$_GET['remove']).')';
    if(mysqli_query($_DB['session'],$sql)){
     $_MODULE['next']=true;
     $KERNEL->alert('Los registros han sido eliminados');
@@ -32,7 +32,7 @@ class kernel_dialog_remove{
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   $CORE->secure_get('remove');$secure_index=implode(',',$_GET['remove']);
   if(!isset($_MODULE['restrict'][_REMOVE])) $_MODULE['restrict'][_REMOVE]=true;
-  $sql='SELECT NULL FROM '.$_TABLE['name'].' AS x WHERE x.id IN('.$secure_index.') AND '.$_MODULE['restrict'][_REMOVE];
+  $sql='SELECT NULL FROM `'.$_TABLE['name'].'` AS x WHERE x.id IN('.$secure_index.') AND '.$_MODULE['restrict'][_REMOVE];
   if($result=mysqli_query($_DB['session'],$sql)){
    if(mysqli_num_rows($result)==count($_GET['remove'])){
     unset($result);

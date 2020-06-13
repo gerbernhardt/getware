@@ -11,27 +11,47 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-class kernel_grid{
-
- function autocomplete() {
-  global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
-  if(isset($_MODULE['grid']['edit'])&&isset($_GET['row'])&&isset($_GET['term'])) {
-   include('kernel/grid.autocomplete.php');
+class kernel_grid {
+  function module_vars() {
+    global $_MODULE, $_GRID;
+    $i = 0;
+    foreach($_GRID as $key => $value) {
+      $key = preg_replace('/\./', '', $key);
+      if(is_array($value)) {
+        $_MODULE['grid']['size'][$i] = $value[0];
+        $_MODULE['grid']['name'][$i] = $value[1];
+      } else {
+        $_MODULE['grid']['size'][$i] = $value;
+        $_MODULE['grid']['name'][$i] = $key;
+      }
+      $_MODULE['grid']['field'][$i] = $key;
+      $i++;
+    }
   }
- }
- 
- function make_array($x) {
-  $j=array();
-  for($i=0;$i<count($x);$i++) $j[$x[$i]]=true;
-  return $j;
- }
+  
+  function autocomplete() {
+    global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
+      
+    if(!isset($_MODULE['grid']['name']))
+      $this->module_vars();
+
+    if(isset($_MODULE['grid']['edit']) && isset($_GET['row']) && isset($_GET['term'])) {
+      include('kernel/grid.autocomplete.php');
+    }
+  }
+
+  function make_array($x) {
+    $j = array();
+    for($i = 0; $i < count($x); $i++) $j[$x[$i]] = true;
+    return $j;
+  }
 
  # MENU GENERATOR
  function menu() {
   global $_ADMIN,$_TABLE,$_MODULE,$CORE;
   if(!isset($_MODULE['grid']['menu'])) return false;
   include('kernel/grid.menu.php');
-  return '"'.htmlspecialchars('{cmd:['.$cmd.'],data:['.$data.'],img:['.$img.'],type:['.$type.'],blank:['.$blank.'],module:['.$module.']}').'"';
+  return '{cmd:['.$cmd.'],data:['.$data.'],img:['.$img.'],type:['.$type.'],blank:['.$blank.'],module:['.$module.']}';
  }
 
  # NAVPAGE GENERATOR
@@ -45,6 +65,9 @@ class kernel_grid{
  # GRID BODY
  function content() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$sql,$KERNEL,$CORE;
+
+  if(!isset($_MODULE['grid']['name'])) $this->module_vars();
+  
   include('kernel/grid.content.php');
  }
 

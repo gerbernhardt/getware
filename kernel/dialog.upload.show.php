@@ -11,14 +11,15 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-$_MODULE['output']=$KERNEL->dialog->header(_UPLOAD);
-$_MODULE['output'].='id:"'.$_GET['upload'].'",';
-$_MODULE['output'].='append:"uxx",';
-$_MODULE['output'].='buttom:"upload",';
-$name='name:["ARCHIVO"],';
-$type='type:["file"],';
-$size='size:[10]}';
-$_MODULE['output'].=$name.$type.$size;
+$_MODULE['output'] = $KERNEL->dialog->header(_UPLOAD);
+$_MODULE['output'] .= 'id:"'.$_GET['upload'].'",';
+$_MODULE['output'] .= 'append:"uxx",';
+$_MODULE['output'] .= 'buttom:"upload",';
+$_MODULE['output'] .= 'name:["ARCHIVO"],';
+$_MODULE['output'] .= 'type:["file"],';
+$_MODULE['output'] .= 'accept:["' . $accept . '"],';
+$_MODULE['output'] .= 'size:[300]}';
+
 $KERNEL->json_print($_MODULE['output']);
 exit();
 

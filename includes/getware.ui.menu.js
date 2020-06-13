@@ -11,6 +11,7 @@
 if(!getware.ui) getware.ui={}
 getware.ui.menu={
  debug:false,
+ options:false,
  action:function(module,date,action,type,blank){
   var id='',url='module=admin&admin='+module+'&'+action;
   // SI ES ADD O UPLOAD ENVIA Y SALE
@@ -34,7 +35,7 @@ getware.ui.menu={
   }
   return false;
  },
- make:function(module,date,options){
+ make:function(module,date){
   var x=$('#window-menu');
   x.hide();
   x.html('');
@@ -43,15 +44,20 @@ getware.ui.menu={
   x.css('left',posX-5);
   x.addClass('ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all');
   var output='';
-  for(var i=0;i<options.data.length;i++){
+  for(var i=0;i<this.options.data.length;i++){
    output+='<div class="menu-h">';
    output+='<a href="#" onclick="javascript:getware.ui.menu.action(\'';
-   if(options.module[i])
-    output+=options.module[i];
+   if(this.options.module[i])
+    output+=this.options.module[i];
    else output+=module;
-   output+='\','+date+',\''+options.cmd[i]+'\',\''+options.type[i]+'\',';
-   output+='\''+options.blank[i]+'\');" role="button" class="ui-corner-all" href="#"><div class="icon icon-'+options.img[i]+'">';
-   output+='&nbsp;</div><span class="menu">'+options.data[i]+'</span></a></div>';
+   output+='\','+date+',\''+this.options.cmd[i]+'\',\''+this.options.type[i]+'\',';
+   output+='\''+this.options.blank[i]+'\');" role="button" class="ui-corner-all" href="#">';
+   
+   output+='<div class="icon icon-'+this.options.img[i]+'">&nbsp;</div>';
+   output+='<span class="menu">'+this.options.data[i]+'</span>';
+   
+   output+='</a>';
+   output+='</div>';
   }
   x.html(output);
   x.slideToggle();

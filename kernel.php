@@ -11,14 +11,18 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
+$_TABLE['name'] = $_GET['admin'];
+
 class kernel{
 
  # TABLE ANALYZER
  function table() {
-  global $_ADMIN,$_TABLE,$_DB;
+  global $_ADMIN, $_TABLE, $_DB;
+
   $sql='SELECT DISTINCT XC.column_name,XC.column_type,XC.column_comment';
   $sql.=' FROM INFORMATION_SCHEMA.COLUMNS AS XC';
   $sql.=' WHERE XC.TABLE_NAME=\''.$_TABLE['name'].'\' AND XC.TABLE_SCHEMA=\''.$_DB['name'].'\'';
+  //exit($sql);
   if($result=mysqli_query($_DB['session'],$sql)) {
    for($i=0;$fetch=$result->fetch_array();$i++) {
     if($fetch['column_type']=='datetime')
@@ -46,11 +50,78 @@ class kernel{
    } if($i<1) $this->alert('TABLA INEXISTENTE!');
    $_ADMIN['ini']=1;
    $_ADMIN['end']=count($_TABLE['column']['name']);
-   //print_r($_TABLE);
   } else $this->alert('ERROR EN LA CONSULTA SQL!');
  }
 
- # PRIVILEGES ANALYZER
+  # COLUMN MAKE
+  function make_row($index, $column, $table) {
+    global $_DB, $_TABLE;
+
+    $sql='SELECT DISTINCT x.column_name, x.column_type, x.column_comment';
+    $sql.=' FROM INFORMATION_SCHEMA.COLUMNS AS x';
+    $sql.=' WHERE x.column_name=\'' . $column . '\' AND x.TABLE_NAME=\'' . $table . '\' AND x.TABLE_SCHEMA=\'' . $_DB['name'] . '\'';
+    if($result = mysqli_query($_DB['session'], $sql)) {
+      if($fetch = $result->fetch_array()) {
+        if($fetch['column_type']=='datetime')
+          $fetch['column_type']='datetime(10)';
+        
+        $_TABLE['column']['name'][$index] = $fetch['column_name'];
+        $_TABLE['column']['eman'][$_TABLE['column']['name'][$index]] = $index;
+        $_TABLE['column']['type'][$index] = $fetch['column_type'];
+        $_TABLE['column']['length'][$index] = preg_replace('#.*\((.*?)\).*#si','\1',$fetch['column_type']);
+        $_TABLE['column']['size'][$index] = preg_replace('#.*\((.*?)\)#si', '\1', $fetch['column_type']);
+
+        $_TABLE['column']['function'][$index] = preg_replace('/\(.*\)/', '', $fetch['column_comment']);
+        if($_TABLE['column']['function'][$index]!='') {
+          $_TABLE['column']['comment'][$index] = explode('.', preg_replace('#.*\((.*?)\)#si', '\1', $fetch['column_comment']));
+          for($j = 1; $j < count($_TABLE['column']['comment'][$index]); $j++) {
+            $aux = explode('|', $_TABLE['column']['comment'][$index][$j]);
+            $_TABLE['column']['comment'][$index][$j] = $aux[0];
+            if(isset($aux[1]))
+              $_TABLE['column']['separator'][$index][$j] = $aux[1];
+            else $_TABLE['column']['separator'][$index][$j] = '';
+          }
+        }
+      }
+    } else $this->alert('ERROR EN LA CONSULTA SQL!');
+  }
+  # COLUMN REMOVE
+  function remove_row($index) {
+    global $_TABLE;
+    unset($_TABLE['column']['eman'][$_TABLE['column']['name'][$index]]);
+    unset($_TABLE['column']['name'][$index]);
+    unset($_TABLE['column']['type'][$index]);
+    unset($_TABLE['column']['length'][$index]);
+    unset($_TABLE['column']['function'][$index]);
+    unset($_TABLE['column']['comment'][$index]);
+    unset($_TABLE['column']['separator'][$index]);
+  }
+  function make_select($i, $post) {
+    global $_TABLE;
+    $_TABLE['column']['comment'][$i];
+
+    $field = 'CONCAT(';
+    for($j = 1; $j < count($_TABLE['column']['comment'][$i]); $j++) {
+        // SUB REGISTROS
+        if(preg_match('/\[*\]/', $_TABLE['column']['comment'][$i][$j])) {
+            $reg = preg_replace('#(.*?)\[.*#si','\1', $_TABLE['column']['comment'][$i][$j]);
+            $subreg = explode(':', preg_replace('#.*\[(.*?)\]#si','\1', $_TABLE['column']['comment'][$i][$j]));
+            $field .= '(SELECT xx.' . $subreg[1] . ' FROM `' . $subreg[0] . '` AS xx WHERE x.' . $reg . '=xx.id)';
+        } else {
+          $field .= 'x.' . $_TABLE['column']['comment'][$i][$j];
+        }
+
+        if($_TABLE['column']['separator'][$i][$j] != '')
+          $field .= ',\'' . $_TABLE['column']['separator'][$i][$j] . '\'';
+        
+        if($j < count($_TABLE['column']['comment'][$i]) - 1) $field .= ',';
+    }
+    $field .= ')';
+    $sql = '(SELECT x.* FROM `' . $_TABLE['column']['comment'][$i][0] . '` AS x WHERE ' . $field . '=\'' . $post . '\')';
+    return $sql;
+  }
+ 
+  # PRIVILEGES ANALYZER
  function privilege($type) {
   global $_ADMIN,$_TABLE,$KERNEL;
   if(isset($_ADMIN[$type])&&isset($_GET[$type])){
@@ -74,47 +145,95 @@ class kernel{
  }
 
  # ROW ANALYZER
- function row_type($i) {
-  global $_ADMIN,$_TABLE;
-  $x=$_TABLE['column']['function'][$i];
-  $x=$_TABLE['column']['function'][$i];
-  if($x=='REFERENCE'||$x=='FILE'||$x=='FILE_CUSTOM')
-   return 'view';
-  elseif($x=='REFERENCES')
-   return 'select';
-  elseif($_TABLE['column']['name'][$i]=='password')
-   return 'pass';
-  elseif($_TABLE['column']['type'][$i]=='date')
-   return 'date';
-  elseif($_TABLE['column']['type'][$i]=='year')
-   return 'year';
-  elseif(preg_match('/descrip/',$_TABLE['column']['name'][$i]))
-   return 'text';
-  else return 'varchar';
- }
+  function row_type($i) {
+    global $_ADMIN,$_TABLE;
+    $type = $_TABLE['column']['type'][$i];
+    $name = $_TABLE['column']['name'][$i];
+    $function = $_TABLE['column']['function'][$i];
+
+    if($function == 'REFERENCE' || $function == 'FILE' || $function == 'FILE_CUSTOM')
+      return 'view';
+    elseif($function == 'REFERENCES')
+      return 'select';
+    elseif($name == 'password')
+      return 'pass';
+    elseif($type == 'date')
+      return 'date';
+    elseif($type == 'year')
+      return 'year';
+    elseif($type == 'text')
+      return 'text';
+    elseif(substr($type, 0, 6) == 'double')
+      return 'number';
+    else return 'varchar';
+  }
 
 function set_autocomplete($str){
- $str=str_replace('\n','',$str);
- $str=str_replace('&quot;','\\"',$str);
- $str=str_replace('&amp;','&',$str);
- return $str;
+  $str = str_replace('\n','',$str);
+  $str = str_replace('&quot;','\\"',$str);
+  $str = str_replace('&amp;','&',$str);
+  return $str;
 }
- # JSON PRINT
+function json_object($name, $array, $numeric = true) {
+  $i = 0;
+  $count = count($array);
+  $output = $name . ':{';
+  foreach($array as $key => $value) {
+    $output .= $key . ':';
+    
+    if($numeric && is_numeric($value))
+      $output .= $value;
+    else $output .= '"' . $value . '"';
+    
+    if($i < $count - 1) $output .= ',';
+    
+    $i++;
+  }
+  $output .= '}';
+  return $output;
+}
+function json_array($array, $numeric = true) {
+  $i = 0;
+  $count = count($array);
+  $output = '[';
+  foreach($array as $value) {
+      if($numeric && is_numeric($value))
+        $output .= $value;
+      else $output .= '"' . $value . '"';
+      if($i < $count - 1) $output .= ',';
+      $i++;
+  }
+  $output .= ']';
+  return $output;
+}
+  # JSON EXIT
+  function json_exit($output) {
+    $output = preg_replace('/\r/','', $output);
+    $output = preg_replace('/\n/','\\n', $output);
+    //header('Content-Type: text/json');
+    header('Accept-Ranges: bytes');
+    header('Content-Length: ' . strlen($output));
+    exit($output);
+   }
+  # JSON PRINT
  function json_print() {
   global $_MODULE;
-  if(is_array($_MODULE['output'])) $_MODULE['output']=implode(',',$_MODULE['output']);
-  $_MODULE['output']=preg_replace('/\r/','',$_MODULE['output']);
-  $_MODULE['output']=preg_replace('/\n/','\\n',$_MODULE['output']);
-  $_MODULE['output']='['.$_MODULE['output'].']';
+  if(is_array($_MODULE['output']))
+    $_MODULE['output'] = implode(',',$_MODULE['output']);
+  
+  $_MODULE['output'] = preg_replace('/\r/','',$_MODULE['output']);
+  $_MODULE['output'] = preg_replace('/\n/','\\n',$_MODULE['output']);
+  $_MODULE['output'] = '['.$_MODULE['output'].']';
   if(isset($_GET['ajax'])) {
-   header('Content-Type: text/plain');
-   header('Accept-Ranges: bytes');
-   header('Content-Length: '.strlen($_MODULE['output']));
+    //header('Content-Type: text/json');
+    header('Accept-Ranges: bytes');
+    header('Content-Length: ' . strlen($_MODULE['output']));
   }
 
   if(!isset($_GET['ajax']))
    print '<script>getware.data(\''.$_MODULE['output'].'\');</script>';
   else print $_MODULE['output'];
+
  }
  # ALERT JSON GENERATOR
  function alert($data,$reference=false,$module=false,$action=false,$blank=false,$button='Ok',$exec=false) {

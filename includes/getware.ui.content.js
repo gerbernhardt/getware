@@ -8,413 +8,374 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License.
  */
-if(!getware.ui) getware.ui={}
-getware.ui.content={
- aff:{
-  id:[],
-  inner:'x',
-  dblclick:function(window,e){
-   var split=e.split('x');
-   if(split.length>1){
-    if(split[1]>1){
-     var upValue=$('div[id=ui-window-'+window+'] #'+split[0]+'x'+(split[1]-1)).val();
-     $('div[id=ui-window-'+window+'] #'+e).val(upValue);
+if(!getware.ui) getware.ui = {}
+getware.ui.content = {
+    aff: {
+        id:[],
+        inner:[],
+        rmclick: function(windowId, e) {
+            $(e).parent().parent().parent().parent().remove();
+            let fields = $('div[id=ui-window-' + windowId + ']').find('tr li[id=field]');
+            let countFields = fields.length
+            for(i = 0; i < countFields; i++) {
+                let rows = $(fields[i]).find('input');
+                let countRows = rows.length;
+                for(j = 0; j < countRows; j++) {
+                    let split = rows[j].id.split('x');
+                    $(rows[j]).attr('id', split[0] + 'x' + i);
+                }
+                getware.ui.content.aff.id[windowId][0] = i;
+            }
+        },
+        dblclick: function(windowId, e) {
+            let split = e.split('x');
+            if(split.length > 0) {
+                if(split[1] > 0) {
+                    let upValue = $('div[id=ui-window-' + windowId + '] #' + split[0] + 'x' + (split[1] - 1)).val();
+                    $('div[id=ui-window-' + windowId + '] #' + e).val(upValue);
+                }
+            }
+        },
+        add: function(module, windowId) {
+            getware.ui.content.aff.id[windowId][0]++;
+            let insertRow = document.getElementById('row-' + windowId).insertRow(-1);
+            let insertCell = insertRow.insertCell(-1);
+            let temp = getware.ui.content.aff.inner[windowId].replace(/(xIDx)+/g, 'x' + getware.ui.content.aff.id[windowId][0]);
+
+            if(getware.ui.content.aff.id[windowId][0] % 2 == 0)
+                insertCell.innerHTML = temp.replace(/(xCLASSx)+/g, 'list_even ui-corner-all');
+            else insertCell.innerHTML = temp.replace(/(xCLASSx)+/g, 'list_odd');
+            $('div[id=ui-window-' + windowId + ']').parent().css('height', 'auto');
+            let x = getware.ui.content.aff.id[windowId][1];
+            let y = getware.ui.content.aff.id[windowId][0];
+            $(insertRow).find('input[id=' + x + 'x' + y + ']').focus();
+            getware.ui.content.render(module, windowId, insertRow);
+
+        },
+        remove: function(windowId) {
+            let deleteRow = document.getElementById('row-' + windowId);
+            if(deleteRow.rows.length > 2) {
+                getware.ui.content.aff.id[windowId][0]--;
+                deleteRow.deleteRow(deleteRow.rows.length - 1);
+            }
+            $('div[id=ui-window-' + windowId + ']').parent().css('height', 'auto');
+        }
+    },
+    info: {
+        grid: function(json) {
+            let x = '';
+            let image = ['error', 'none', 'success'];
+            for(i=0; i < json.rows.length; i++) {
+                x = $('div[id=overflow-c-' + json.window + '] input[id=' + json.rows[i] + '-' + json.window + ']');
+                json.data[i] += 1;
+                x.parent().parent().find('input[type=text]').css('background','url(\'./images/input_' + image[json.data[i]] + '.png\')');
+            }
+        },
+        edit: function(json) {
+            let x = '';
+            let image = ['error', 'hide', 'success'];
+            for(i = 0; i < json.rows.length; i++) {
+                x = $('div[id=ui-window-' + json.window + '] td[id=img' + json.rows[i] + '] div');
+                json.data[i]++;
+                x.removeClass();
+                if(json.data[i] > 1) json.data[i] = 2;
+                x.addClass('icon icon-' + image[json.data[i]]);
+                //x.html('<img src="images/'+image[json.data[i]]+'.png" title="">');
+            }
+        },
+        add:function(json){
+            let input, select;
+            let image = ['output', 'input'];
+            for(i = 0; i < json.rows.length; i++) {
+                json.rows[i] = json.rows[i].replace(/(\[)+/g, '\\[');
+                input = $('div[id=ui-window-' + json.window + '] input[id=' + json.rows[i] + ']');
+                select = $('div[id=ui-window-' + json.window + '] select[id=' + json.rows[i] + ']');
+                input.css('background','url(\'./images/' + image[json.data[i]] + '.png\')');
+                select.css('background','url(\'./images/' + image[json.data[i]] + '.png\')');
+            }
+        },
+        error:function(json){
+            let input, select;
+            let image = ['output', 'input'];
+
+            let name = '';
+            if(json.name) name = '[name=\\\'' + json.name + '\\\']';
+
+            let obj = 'div[id=ui-window-' + json.window + ']';
+
+            for(i = 0; i < json.rows.length; i++) {
+                input = $(obj + ' input[id=\'' + json.rows[i] + '\']');
+                select = $(obj + ' select[id=\'' + json.rows[i] + '\']');
+                input.css('background','url(\'./images/' + image[json.data[i]] + '.png\')');
+                select.css('background','url(\'./images/' + image[json.data[i]] + '.png\')');
+            }
+        }
+    },
+    html: function(json, row, i, extra = '') {
+        //content = getware.ui.content.html(json.module, json.windowId, json.type[i], row, '', json.data[i]);
+        let output = '';
+        placeholder = 'placeholder="' + json.name[i] + '" '
+        let size = '';
+        if(name == '') size = ' size="25"';
+        
+        if(json.type[i] == 'date')
+            output = '<input id="' + row + 'date' + json.windowId + '" name="' + row + json.windowId + '" ' + placeholder + 'type="date" maxlength="10" class="date" value="' + json.data[i] + '" datepicker="' + json.type[i] + '" ' + extra + ' />';
+        
+        if(json.type[i] == 'month')
+            output = '<input id="' + row + 'date' + json.windowId + '" name="' + row + json.windowId + '" ' + placeholder + 'type="text" maxlength="10" class="date" value="' + json.data[i] + '" datepicker="' + json.type[i] + '" ' + extra + ' />';
+        
+        if(json.type[i] == 'year')
+            output = '<input id="' + row + 'date' + json.windowId + '" name="' + row + json.windowId + '" ' + placeholder + 'type="text" maxlength="10" class="date" value="' + json.data[i] + '" datepicker="' + json.type[i] + '" ' + extra + ' />';
+        
+        if(json.type[i] == 'view') {
+            output = '<input id="' + row + '" name="' + row + '" ' + placeholder + 'type="text" ' + size + 'maxlength="255" class="view" value="' + json.data[i] + '" view="' + json.type[i] + '" ' + extra + ' />';
+            output += '<img id="' + row + '" src="images/view.png" width="16" title="Ver" type="view" />';
+            label = '';
+            
+            if(typeof json.add !== 'undefined') {
+                if(typeof json.add[parseInt(row)] !== 'undefined') {
+                    output += '<img id="add" src="images/add.png" width="16" title="Agregar" type="add" />';
+                    output += '<label id="add" style="display:none;">' + json.add[parseInt(row)] + '</label>';
+                }
+            }
+            output += '<label id="filter" style="display:none;">' + json.filter[i] + '</label>';
+        }
+        if(json.type[i] == 'number')
+            output = '<input id="' + row + '" name="' + row + '" ' + placeholder + 'type="number" step="any" ' + size + ' maxlength="255" class="normal" value="' + json.data[i] + '" ' + extra + ' />';
+
+        if(json.type[i] == 'select') {
+            output = '<select id="' + row + '" name="' + row + '" multiple="multiple" ' + placeholder + '>';
+            for(j = 0; j < json.data[i][0].length; j++)
+                output += '<option value="' + json.data[i][0][j] + '" selected>' + json.data[i][0][j] + '</option>';
+            for(j = 0; j < json.data[i][1].length; j++)
+                output+='<option value="' + json.data[i][1][j] + '">' + json.data[i][1][j] + '</option>';
+            output += '</select>';
+        }
+        
+        if(json.type[i] == 'varchar')
+            output = '<input id="' + row + '" name="' + row + '" ' + placeholder + 'type="text" ' + size + ' maxlength="255" class="normal" value="' + json.data[i] + '" ' + extra + ' />';
+        
+        if(json.type[i] == 'pass')
+            output = '<input id="' + row + '" name="' + row + '" ' + placeholder + 'type="password" ' + size + ' maxlength="255" class="normal" value="" />';
+        
+        if(json.type[i] == 'text') {
+            output = '<textarea id="' + row + '" name="' + row + '" ' + placeholder + 'wrap="on" class="normal" ';
+            output += 'style="width:calc(100% - 11px);height:92%;"' + extra + '>' + json.data[i] + '</textarea>';
+        }
+        return output;
+    },
+    add:function(json){
+        return getware.ui.content.edit(json);
+    },
+    edit: function(json) {
+        /*****************
+        * MAKE X: ADD & EDIT
+        ******************/
+        let rest = 0;
+        let height = 24;
+        let marginLeft = 0;
+        let row = json.ini;
+        let bottom = 0;
+        let output = '';
+        
+        let sync = true;
+        for(i = 0; i < json.type.length; i++) {
+            if(sync == true) {
+                sync = false;
+                output += '<div style="margin-left:' + marginLeft + 'px;float:left;width:330px;margin-top:8px;background:#ADD8E6;box-shadow: 0 0px 15px 5px #318BA8;">\n';
+            }
+            content = getware.ui.content.html(json, row, i);
+            if(json.type[i] == 'text') {
+                rest += 4;
+                height = height * 4;
+            } else height = 24;
+            if((i == json.type.length - 1) || (rest >= json.br))
+                bottom = 1;
+            else bottom = 0;
+            output += '<li class="list_even ui-widget-content ui-li" style="height:' + height + 'px;width:100%;border:1px dashed #8eacc1;border-bottom:' + bottom + 'px dashed #8eacc1;">\n';
+            output += '<div id="0" class="ui-title " style="text-align:left;width: 100px;" title="'+ json.name[i] + '">'+ json.name[i] + '</div>\n';
+            output += '<div id="img' + row + '" class="ui-title " style="padding-top:1px;width:16px;"><div>&nbsp;</div></div>\n';
+            output += '<div id="1" class="ui-title " style="text-align:left;width:184px;height:100%;padding-top:1px;">' + content + '</div>\n';
+            output += '</li>\n';
+
+            if(rest >= json.br) {
+                sync = true;
+                marginLeft = 20;
+                output += '</div>\n';
+                json.br = json.br * 2;
+            }
+            if(i == json.type.length - 1) output += '</div>\n';
+            row++;
+            rest++;
+        }
+        output += '</div>';
+        /*****************
+        * END OF ADD & EDIT
+        ******************/
+        return output;
+    },
+    axx: function(json) {
+        /*****************
+        * MAKE XX: ADD
+        ******************/
+        let row = json.ini;
+        let head = json.head;
+        let width = json.width - 27;
+        // ROW
+        let output = '<table id="row-' + json.windowId + '" class="dialog-main" cellspacing="0" cellpadding="0" width="' + width + '">';
+        output += '<tr>';
+        output += '<td>';
+        let countPX = 0;
+        let widthDiff = 0;
+        output += '<li class="ui-widget-content dialog-field" style="height:auto;">';       
+        for(i = 0; (i < json.name.length) && (head > row); i++) {
+            if(head == row + 1)
+                json.size[i] = width - (widthDiff + countPX);
+            else widthDiff += json.size[i];
+
+            if(json.type[i] == 'text') {
+                output += '<div id="' + i + '" name="' + i + '" class="ui-content dialog-row" style="padding:0px;width:' + width + 'px;height:48px;">';
+            } else {
+                countPX++;
+                output += '<div id="' + i + '" name="' + i + '" class="ui-content dialog-row" style="padding:0px;width:' + json.size[i] + 'px;">';
+            }
+            output += getware.ui.content.html(json, row + 'x', i);
+            output += '</div>';
+            row++;
+        }
+        output += '</li>';
+        
+        countPX = 0;
+        widthDiff = 0;
+        head = json.head - json.ini;
+        getware.ui.content.aff.inner[json.windowId] = '';
+        for(i = head; i < json.name.length; i++) {
+            
+            if(i == json.name.length - 1)
+                json.size[i] = width - (widthDiff + countPX);
+            else widthDiff += json.size[i];
+            // INI
+            if(i == head) getware.ui.content.aff.inner[json.windowId] += '<li class="ui-widget-content dialog-field">';
+
+            getware.ui.content.aff.inner[json.windowId] += '<div id="' + row + '" name="' + row + '" class="ui-content dialog-row" style="padding:0px;width:' + json.size[i] + 'px;">';
+                    
+            value = json.data[i];
+            let extra =  'ondblclick="javascript:getware.ui.content.aff.dblclick(' + json.windowId + ',\'' + row + 'xIDx\');" ';
+            getware.ui.content.aff.inner[json.windowId] += getware.ui.content.html(json, row + 'xIDx', i, extra);
+            getware.ui.content.aff.inner[json.windowId] += '</div>';
+            countPX++;
+            row++;
+                    
+            // END
+            if(i == json.name.length - 1)
+                getware.ui.content.aff.inner[json.windowId] += '</li>';
+        }
+        output += '</td>';
+        output += '</tr>';
+        output += '</table>';
+
+        output+='<p align="center">';
+        getware.ui.content.aff.id[json.windowId] = [-1, json.head];
+        output += '<input type="button" value="Agregar" onclick="javascript:getware.ui.content.aff.add(\'' + json.module + '\', ' + json.windowId + ');" />';
+        output += '<input type="button" value="Eliminar" onclick="javascript:getware.ui.content.aff.remove(' + json.windowId + ');" />';
+        output += '</p>';
+        /*****************
+        * END OF ADD XX
+        ******************/
+        return output;
+    },
+    uxx: function(json) {
+        /*****************
+        * MAKE XX: UPLOAD
+        ******************/
+       let row = json.ini;
+       let head = json.head;
+       let width = json.width - 27;
+       head = json.head - json.ini;
+       // ROW
+       let output = '<form id="' + json.windowId + '">';
+       output += '<table id="row-' + json.windowId + '" class="dialog-main" cellspacing="0" cellpadding="0" width="' + width + '">';
+       output += '<tr>';
+       output += '<td>';
+
+       getware.ui.content.aff.inner[json.windowId] = '<li class="ui-widget-content dialog-field">';
+       getware.ui.content.aff.inner[json.windowId] += '<div id="' + row + '" name="' + row + '" class="ui-content dialog-row" style="padding:0px;width:calc(100% - 1px);">';
+       getware.ui.content.aff.inner[json.windowId] += '<input id="0xIDx" name="0xIDx" type="file" class="file" value="" accept="' + json.accept + '" />';
+       getware.ui.content.aff.inner[json.windowId] += '</div>';
+       getware.ui.content.aff.inner[json.windowId] += '</li>';
+       
+       output += '</td>';
+       output += '</tr>';
+       output += '</table>';
+       output += '</form>';
+
+       output+='<p align="center">';
+       getware.ui.content.aff.id[json.windowId] = [-1, json.head];
+       output += '<input type="button" value="Agregar" onclick="javascript:getware.ui.content.aff.add(\'' + json.module + '\', ' + json.windowId + ');" />';
+       output += '<input type="button" value="Eliminar" onclick="javascript:getware.ui.content.aff.remove(' + json.windowId + ');" />';
+       output += '</p>';
+       /*****************
+       * END OF UPLOAD XX
+       ******************/
+       return output;
+    },
+    render: function(module, windowId, element = false) {
+
+        if(typeof element === 'boolean') {
+            element = $('div[id=ui-window-' + windowId + ']');
+        } else if(typeof element === 'string') {
+            element = $('div[id=ui-window-' + windowId + '] ' + element);
+        }
+
+        $(element).find('input[type=button]').button();
+        
+        $(element).find('select').multiselect({minWidth: 180});
+
+        $(element).find('img[type=view]').each(function() {
+            this.addEventListener('click', function(event) {
+                event.preventDefault();
+                let label = $(this).parent().find('label[id=filter]').html();
+                let random = $(this).parent().find('input').attr('name');
+                getware.ui.submenu.get(windowId, this.id, module, label, random);
+            });
+        });
+        
+        $(element).find('img[type=add]').each(function() {
+            this.addEventListener('click', function(event) {
+                event.preventDefault();
+                let label = $(this).parent().find('label[id=add]').html();
+                if(label != '') {
+                    url = 'module=admin&admin=' + label + '&add';
+                    getware.get(url);
+                } else return;
+            });
+        });
+
+        $(element).find('input[type=text][view]').each(function() {
+            this.addEventListener('keydown', function(event) {
+                if(event.altKey && event.key == '+') {
+                    let label = $(this).parent().find('label[id=add]').html();
+                    if(label != '') {
+                        url = 'module=admin&admin=' + label + '&add';
+                        getware.get(url);
+                    } else return;
+                }
+            });
+            
+            let label = $(this).parent().find('label[id=filter]').html();
+            let filter = $(element).find(' input[id=' + label + ']').val();
+            let url = 'index.php?module=admin&admin=' + module + '&autocomplete=' + this.id + '&filter=' + filter + '&ajax='
+            $(this).autocomplete({
+                source: url,
+                minLength: 0,
+                select: function(event, ui) {
+                    $(this).val(ui.item.value);
+                    if(ui.item.info) {
+                        $('div[id=' + this.id + ']').html(ui.item.info);
+                    }
+                    return false;
+                }
+            });
+        });
     }
-   }
-  },
-  add:function(window){
-   if(!getware.ui.content.aff.id[window]) getware.ui.content.aff.id[window]=0;
-   getware.ui.content.aff.id[window]++;
-   var insertRow=document.getElementById('xRow_'+window).insertRow(-1);
-   var insertCell=insertRow.insertCell(-1);
-   var temp=getware.ui.content.aff.inner.replace(/(xIDx)+/g,'x'+getware.ui.content.aff.id[window]);
-   if(getware.ui.content.aff.id[window]%2==0)
-    insertCell.innerHTML=temp.replace(/(xCLASSx)+/g,'list_even');
-   else insertCell.innerHTML=temp.replace(/(xCLASSx)+/g,'list_odd');
-   $('div[id=ui-window-'+window+']').parent().css('height','auto');
-  },
-  remove:function(window){
-   var deleteRow=document.getElementById('xRow_'+window);
-   if(deleteRow.rows.length>2){
-    getware.ui.content.aff.id[window]--;
-    deleteRow.deleteRow(deleteRow.rows.length-1);
-   }
-   $('div[id=ui-window-'+window+']').parent().css('height','auto');
-  }
- },
- info:{
-  grid:function(json){
-   var x = '';
-   var image = ['error', 'none', 'success'];
-   for(i=0; i < json.rows.length; i++) {
-    x = $('div[id=overflow-c-' + json.window + '] input[id=' + json.rows[i] + '-' + json.window + ']');
-    json.data[i] += 1;
-    x.parent().parent().find('input[type=text]').css('background','url(\'./images/input_' + image[json.data[i]] + '.png\')');
-   }
-  },
-  edit:function(json){
-   var x='';
-   var image=['error','hide','success'];
-   for(i=0;i<json.rows.length;i++){
-    x=$('div[id=ui-window-'+json.window+'] td[id=img'+json.rows[i]+'] div');
-    json.data[i]++;
-    x.removeClass();
-    if(json.data[i]>1) json.data[i]=2;
-    x.addClass('icon icon-'+image[json.data[i]]);
-    //x.html('<img src="images/'+image[json.data[i]]+'.png" title="">');
-   }
-  },
-  add:function(json){
-   var x='';
-   var image=['output','input'];
-   for(i=0;i<json.rows.length;i++){
-    x=$('div[id=ui-window-'+json.window+'] input[id^='+json.rows[i]+']');
-    x.css('background','url(\'./images/'+image[json.data[i]]+'.png\')');
-   }
-  }
- },
- add:function(date,json){
-  return getware.ui.content.edit(date,json);
- },
- edit:function(date,json){
-  /*****************
-  * MAKE X: ADD & EDIT
-  ******************/
-  var j=1;
-  var rest=0;
-  var row=json.ini;
-  var output='<table cellspacing="0" cellpadding="0" width="100%"><tr><td valign="top">';
-  for(i=0;i<json.type.length;i++){
-   if(json.type[i]=='text') rest=rest+4;
-   if(rest==json.br){
-    output+='</td><td valign="top">';
-    json.br=json.br*2;
-    j++;
-   }
-   output+='<table cellspacing="1" cellpadding="1" width="98%"><tr class="list_even">';
-   output+='<td class="subtitle" width="110" valign="top" align="left">'+json.name[i]+'</td>';
-   output+='<td id="img'+row+'" width="16" valign="top"><div>&nbsp;</div></td>';
-   output+='<td valign="top" align="left">';
-   var value='';
-   if(json.data) value=json.data[i];
-   if(json.type[i]=='date')
-    output+='<input id="'+row+'date'+date+'" name="'+row+date+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='month')
-    output+='<input id="'+row+'date'+date+'" name="'+row+date+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='year')
-    output+='<input id="'+row+'date'+date+'" name="'+row+date+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='view')
-    output+='<input id="'+row+'" name="'+row+'" type="text" size="25" maxlength="255" class="view" value="'+value+'" view="'+json.type[i]+'" />&nbsp;<img id="ximage'+row+'" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'\',\''+json.module+'\',\'\');" />';
-   if(json.type[i]=='select'){
-    output+='<select id="'+row+'" name="'+row+'" multiple="multiple">';
-    for(j=0;j<json.data[i][0].length;j++)
-     output+='<option value="'+json.data[i][0][j]+'" selected>'+json.data[i][0][j]+'</option>';
-    for(j=0;j<json.data[i][1].length;j++)
-     output+='<option value="'+json.data[i][1][j]+'">'+json.data[i][1][j]+'</option>';
-    output+='</select>';
-   }
-   if(json.type[i]=='varchar')
-    output+='<input id="'+row+'" name="'+row+'" type="text" size="25" maxlength="255" value="'+value+'" />';
-   if(json.type[i]=='pass')
-    output+='<input id="'+row+'" name="'+row+'" type="password" size="25" maxlength="255" value="" />';
-   if(json.type[i]=='text')
-    output+='<textarea id="'+row+'" name="'+row+'" wrap="on" cols="22" rows="7">'+value+'</textarea>';
-   output+='</td></tr></table>';
-   row++;
-   rest++;
-  }
-  output+='</td></tr></table>';
-  /*****************
-  * END OF ADD & EDIT
-  ******************/
-  return output;
- },
- query:function(date,json){
-  /*****************
-  * MAKE X: QUERY
-  ******************/
-  var j=1;
-  var td=15;
-  var rest=0;
-  var row=json.ini;
-  var output='<table cellspacing="0" cellpadding="0" width="100%"><tr><td valign="top">';
-  for(i=0;i<json.type.length;i++){
-   if(json.type[i]=='text') rest=rest+5;
-   if(rest>=td){output+='</td><td valign="top">';j++;td=td*2;}
-   output+='<table cellspacing="1" cellpadding="1" width="98%"><tr class="list_even">';
-   output+='<td class="subtitle" width="122" valign="top" align="left">'+json.name[i]+'</td>';
-   output+='<td id="img'+row+'" width="16" valign="top"><div>&nbsp;</div></td>';
-   output+='<td valign="top" align="left">';
-   var value='';
-   var info='';
-   if(json.data) value=json.data[i];
-   if(json.info) info=json.info[i];
-   if(json.type[i]=='date')
-    output+='<input id="'+row+'date'+date+'" name="'+row+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />'+info;
-   if(json.type[i]=='month')
-    output+='<input id="'+row+'date'+date+'" name="'+row+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />'+info;
-   if(json.type[i]=='year')
-    output+='<input id="'+row+'date'+date+'" name="'+row+'" type="text" size="10" maxlength="10" value="'+value+'" datepicker="'+json.type[i]+'" />+info';
-   if(json.type[i]=='view')
-    output+='<input id="'+row+'" name="'+row+'" type="text" size="25" maxlength="255" class="view" value="'+value+'" view="'+json.type[i]+'" />&nbsp;<img id="ximage'+row+'" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'\',\''+json.module+'\',\'\');" />'+info;
-   if(json.type[i]=='varchar')
-    output+='<input id="'+row+'" name="'+row+'" type="text" size="25" maxlength="255" value="'+value+'" />'+info;
-   if(json.type[i]=='pass')
-    output+='<input id="'+row+'" name="'+row+'" type="password" size="25" maxlength="255" value="" />'+info;
-   if(json.type[i]=='text')
-    output+='<textarea id="'+row+'" name="'+row+'" wrap="on" cols="22" rows="7">'+value+'</textarea>'+info;
-   output+='</td></tr></table>';
-   row++;
-   rest++;
-  }
-  /*****************
-  * END OF QUERY
-  ******************/
-  return output;
- },
- qxx:function(date,json){
-  /*****************
-  * MAKE XX: QUERY
-  ******************/
-  var br=0;
-  var row=json.ini;
-  var head=json.head;
-  var output='<table id="xTitle" cellspacing="0" cellpadding="0" width="98%"><tr>';
-  // ROW
-  output+='<table id="xRow_'+date+'" cellspacing="0" cellpadding="0" width="98%"><tr><td>';
-
-  output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-  for(i=0;i<json.name.length&&head>row;i++){
-   var value=json.data[i];
-
-   if(json.type[i]=='text'){
-   	output+='</tr></table>'
-   	output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-   	output+='<textarea id="'+row+'x" name="'+row+'x" placeholder="'+json.name[i]+'" wrap="on" style="width:98%;height:150px;">'+value+'</textarea>';
-   	output+='</tr></table>'
-   	output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-   }
-   if(json.type[i]!='text') output+='<td width="'+json.size[i]+'%" valign="top" align="left">';
-   if(json.type[i]=='select'){
-    output+='<select id="'+row+'x" name="'+row+'x" multiple="multiple">';
-    for(j=0;j<value[0].length;j++)
-     output+='<option value="'+value[0][j]+'" selected>'+value[0][j]+'</option>';
-    for(j=0;j<value[1].length;j++)
-     output+='<option value="'+value[1][j]+'">'+value[1][j]+'</option>';
-    output+='</select>';
-   }
-   if(json.type[i]!='text'&&json.type[i]!='textbox'&&json.type[i]!='select') output+='<input id="'+row+'x" name="'+row+'x" placeholder="'+json.name[i]+'" ';
-   if(json.type[i]=='date') output+='type="text" maxlength="10" class="date" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='year') output+='type="text" maxlength="10" class="date" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='view') output+='type="text" maxlength="255" class="view" value="'+value+'" view="'+json.type[i]+'" />&nbsp;<img id="ximage'+row+'x" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'x\',\''+json.module+'\',\'\');">';
-   if(json.type[i]=='varchar') output+='type="text" maxlength="255" class="normal" value="'+value+'" />';
-   if(json.type[i]=='pass') output+='type="password" maxlength="255" class="normal" value="" />';
-   if(json.type[i]=='check') output+='type="checkbox" value="'+value+'" onclick="javascript:if(this.checked==true) this.value=\'SI\'; else this.value=\'NO\';" />';
-
-   if(json.type[i]!='text'&&json.type[i]!='textbox') output+='</td>';
-   row++;
-  }
-  output+='</tr></table>';
-
-  getware.ui.content.aff.inner='';
-  head=json.head-json.ini;
-  for(i=head;i<json.name.length;i++){
-   if(br==json.br) br=0;
-   if(br==0) getware.ui.content.aff.inner+='<table cellspacing="1" cellpadding="1"><tr class="xCLASSx">';
-   getware.ui.content.aff.inner+='<td width="'+json.size[i]+'%" valign="top" align="left">';
-   value=json.data[i];
-
-   if(json.type[i]!='text'&&json.type[i]!='textbox'&&json.type[i]!='select')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" placeholder="'+json.name[i]+'" ';
-
-   if(json.type[i]=='file')
-    getware.ui.content.aff.inner+='type="file" value="'+value+'" />';
-   if(json.type[i]=='date')
-    getware.ui.content.aff.inner+='type="text" maxlength="10" class="date" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='year')
-    getware.ui.content.aff.inner+='type="text" maxlength="10" class="date" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='view'){
-    getware.ui.content.aff.inner+='type="text" maxlength="255" class="view" value="'+value+'" filter="'+json.filter[i]+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" view="'+json.type[i]+'" />&nbsp;';
-    getware.ui.content.aff.inner+='<img id="ximage'+row+'xIDx" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'xIDx\',\''+json.module+'\',\''+json.filter[i]+'xIDx\');" />';
-   }
-   if(json.type[i]=='varchar')
-    getware.ui.content.aff.inner+='type="text" maxlength="255" class="normal" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" />';
-   if(json.type[i]=='pass')
-    getware.ui.content.aff.inner+='type="password" maxlength="255" class="normal" value="" />';
-
-   if(json.type[i]=='select'){
-    getware.ui.content.aff.inner+='<select id="'+row+'xIDx" name="'+row+'xIDx" multiple="multiple">';
-    for(j=0;j<value[1].length;j++)
-     getware.ui.content.aff.inner+='<option value="'+value[1][j]+'">'+value[1][j]+'</option>';
-    getware.ui.content.aff.inner+='</select>';
-   }
-
-   if(json.type[i]=='text')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" type="text" maxlength="255" class="normal" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" />';
-
-   if(json.type[i]=='textbox')
-   	getware.ui.content.aff.inner+='<textarea id="'+row+'xIDx" name="'+row+'xIDx" placeholder="'+json.name[i]+'" wrap="on" style="width:98%;height:50px;" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');">'+value+'</textarea>';
-
-   if(json.type[i]=='check')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" type="checkbox" value="'+value+'" onclick="javascript:if(this.checked==true) this.value=\'SI\'; else this.value=\'NO\';" />';
-
-   getware.ui.content.aff.inner+='<div id="'+row+'xIDx" name="'+row+'xIDx"></div></td>';
-   if(br==json.br) getware.ui.content.aff.inner+='</tr></table>';
-   row++;
-   br++;
-  }
-  output+='</td></tr></table>';
-  output+='<p align="center">';
-  output+='<input type="button" value="Agregar" onclick="javascript:getware.ui.content.aff.add('+date+');'+json.afterAppend+'(\''+json.module+'\','+date+');" />';
-  output+='<input type="button" value="Eliminar" onclick="javascript:getware.ui.content.aff.remove('+date+');" />';
-  output+='</p>';
-  /*****************
-  * END OF QUERY XX
-  ******************/
-  return output;
- },
- uxx:function(date,json){
-  /*****************
-  * MAKE XX: UPLOAD
-  ******************/
-  // ROW
-  var output='<form id="'+date+'">';
-  output+='<table id="xRow_'+date+'" cellspacing="0" cellpadding="0" width="98%"><tr><td>';
-  getware.ui.content.aff.inner='';
-  getware.ui.content.aff.inner+='<table cellspacing="1" cellpadding="1"><tr class="xCLASSx">';
-  getware.ui.content.aff.inner+='<td width="'+json.size[0]+'%" valign="top" align="left">';
-  getware.ui.content.aff.inner+=json.name[0]+'<br>';
-  getware.ui.content.aff.inner+='<input id="0xIDx" name="0xIDx" type="file" class="file" value="" />';
-  getware.ui.content.aff.inner+='</td>';
-  output+='</td></tr></table>';
-  output+='</form>';
-  output+='<p align="center">';
-  output+='<input type="button" value="Agregar" onclick="javascript:getware.ui.content.aff.add('+date+');'+json.afterAppend+'(\''+json.module+'\','+date+');" />';
-  output+='<input type="button" value="Eliminar" onclick="javascript:getware.ui.content.aff.remove('+date+');" />';
-  output+='</p>';
-  /*****************
-  * END OF UPLOAD XX
-  ******************/
-  return output;
- },
- axx:function(date,json){
-  /*****************
-  * MAKE XX: ADD
-  ******************/
-  var br=0;
-  var row=json.ini;
-  var head=json.head;
-  var output='<table id="xTitle" cellspacing="0" cellpadding="0" width="98%"><tr>';
-  // ROW
-  output+='<table id="xRow_'+date+'" cellspacing="0" cellpadding="0" width="98%"><tr><td>';
-
-  output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-  for(i=0;i<json.name.length&&head>row;i++){
-   var value=json.data[i];
-
-   if(json.type[i]=='text'){
-   	output+='</tr></table>'
-   	output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-   	output+='<textarea id="'+row+'x" name="'+row+'x" placeholder="'+json.name[i]+'" wrap="on" style="width:98%;height:150px;">'+value+'</textarea>';
-   	output+='</tr></table>'
-   	output+='<table cellspacing="1" cellpadding="1"><tr class="list_even">';
-   }
-   if(json.type[i]!='text') output+='<td width="'+json.size[i]+'%" valign="top" align="left">';
-   if(json.type[i]=='select'){
-    output+='<select id="'+row+'x" name="'+row+'x" multiple="multiple">';
-    for(j=0;j<value[0].length;j++)
-     output+='<option value="'+value[0][j]+'" selected>'+value[0][j]+'</option>';
-    for(j=0;j<value[1].length;j++)
-     output+='<option value="'+value[1][j]+'">'+value[1][j]+'</option>';
-    output+='</select>';
-   }
-   if(json.type[i]!='text'&&json.type[i]!='select') output+='<input id="'+row+'x" name="'+row+'x" placeholder="'+json.name[i]+'" ';
-   if(json.type[i]=='date') output+='type="text" maxlength="10" class="date" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='year') output+='type="text" maxlength="10" class="date" value="'+value+'" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='view') output+='type="text" maxlength="255" class="view" value="'+value+'" view="'+json.type[i]+'" />&nbsp;<img id="ximage'+row+'x" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'x\',\''+json.module+'\',\'\');">';
-   if(json.type[i]=='varchar') output+='type="text" maxlength="255" class="normal" value="'+value+'" />';
-   if(json.type[i]=='pass') output+='type="password" maxlength="255" class="normal" value="" />';
-   if(json.type[i]=='check') output+='type="checkbox" value="'+value+'" onclick="javascript:if(this.checked==true) this.value=\'SI\'; else this.value=\'NO\';" />';
-
-   if(json.type[i]!='text') output+='</td>';
-   row++;
-  }
-  output+='</tr></table>';
-
-  getware.ui.content.aff.inner='';
-  head=json.head-json.ini;
-  for(i=head;i<json.name.length;i++){
-   if(br==json.br) br=0;
-   if(br==0) getware.ui.content.aff.inner+='<table cellspacing="1" cellpadding="1"><tr class="xCLASSx">';
-   getware.ui.content.aff.inner+='<td width="'+json.size[i]+'%" valign="top" align="left">';
-   value=json.data[i];
-
-   if(json.type[i]!='select')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" placeholder="'+json.name[i]+'" ';
-
-   if(json.type[i]=='file')
-    getware.ui.content.aff.inner+='type="file" value="'+value+'" />';
-   if(json.type[i]=='date')
-    getware.ui.content.aff.inner+='type="text" maxlength="10" class="date" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='year')
-    getware.ui.content.aff.inner+='type="text" maxlength="10" class="date" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" datepicker="'+json.type[i]+'" />';
-   if(json.type[i]=='view'){
-    getware.ui.content.aff.inner+='type="text" maxlength="255" class="view" value="'+value+'" filter="'+json.filter[i]+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" view="'+json.type[i]+'" />&nbsp;';
-    getware.ui.content.aff.inner+='<img id="ximage'+row+'xIDx" src="images/view.png" title="Ver" onclick="javascript:getware.ui.submenu.get(\''+date+'\',\''+row+'xIDx\',\''+json.module+'\',\''+json.filter[i]+'xIDx\');" />';
-   }
-   if(json.type[i]=='varchar')
-    getware.ui.content.aff.inner+='type="text" maxlength="255" class="normal" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" />';
-   if(json.type[i]=='pass')
-    getware.ui.content.aff.inner+='type="password" maxlength="255" class="normal" value="" />';
-
-   if(json.type[i]=='select'){
-    getware.ui.content.aff.inner+='<select id="'+row+'xIDx" name="'+row+'xIDx" multiple="multiple">';
-    for(j=0;j<value[1].length;j++)
-     getware.ui.content.aff.inner+='<option value="'+value[1][j]+'">'+value[1][j]+'</option>';
-    getware.ui.content.aff.inner+='</select>';
-   }
-
-   if(json.type[i]=='text')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" type="text" maxlength="255" class="normal" value="'+value+'" ondblclick="javascript:getware.ui.content.aff.dblclick('+date+',\''+row+'xIDx\');" />';
-   if(json.type[i]=='check')
-    getware.ui.content.aff.inner+='<input id="'+row+'xIDx" name="'+row+'xIDx" type="checkbox" value="'+value+'" onclick="javascript:if(this.checked==true) this.value=\'SI\'; else this.value=\'NO\';" />';
-
-   getware.ui.content.aff.inner+='<div id="'+row+'xIDx" name="'+row+'xIDx"></div></td>';
-   if(br==json.br) getware.ui.content.aff.inner+='</tr></table>';
-   row++;
-   br++;
-  }
-  output+='</td></tr></table>';
-  output+='<p align="center">';
-  output+='<input type="button" value="Agregar" onclick="javascript:getware.ui.content.aff.add('+date+');'+json.afterAppend+'(\''+json.module+'\','+date+');" />';
-  output+='<input type="button" value="Eliminar" onclick="javascript:getware.ui.content.aff.remove('+date+');" />';
-  output+='</p>';
-  /*****************
-  * END OF ADD XX
-  ******************/
-  return output;
- },
- render:function(json,window){
-  if(!json.module)
-   module=json;
-  else module=json.module;
-  $('select').multiselect({minWidth:195});
-  $('div[id=ui-window-'+window+']').find('input[type=text][view]').each(function(){
-   if(filter=$('div[id=ui-window-'+window+'] input[id='+$(this).attr('filter')+']').val()){
-   }else filter=$('div[id=ui-window-'+window+'] input[id='+$(this).attr('filter')+'x]').val();
-   var url='index.php?module=admin&admin='+module+'&autocomplete='+this.id+'&filter='+filter+'&ajax='
-
-   $(this).autocomplete({
-    source:url,
-    minLength:0,
-    select:function(event,ui){
-     $(this).val(ui.item.value);
-     if(ui.item.info){
-      $('div[id='+this.id+']').html(ui.item.info);
-     }
-     return false;
-    }
-   });
-  });
- }
 }

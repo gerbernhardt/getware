@@ -18,7 +18,7 @@ class kernel_dialog_upload{
   include('kernel/dialog.upload.save.php');
  }
  
- function show(){
+ function show($accept = '*/*'){
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$CORE,$KERNEL;
   $this->save();
   include('kernel/dialog.upload.show.php');

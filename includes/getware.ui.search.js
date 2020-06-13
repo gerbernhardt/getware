@@ -8,56 +8,75 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License.
  */
-if(!getware.ui) getware.ui={}
-getware.ui.search={
- form:function(form){
-  var string='window='+form.substr(5,13)+'&';
-  var x=$('form[id='+form+'] input[type=text]').each(function(){
-   string+='search[]='+encodeURIComponent(this.value)+'&';
-  });
-  return string;
- },
+if(!getware.ui) getware.ui = {}
 
- make:function(json){
-  var date=new Date();
-  date=date.getTime();
-  getware.ui.date=date; // PARA QUE TENGA CONECTIVIDAD CON EL NAVBAR
-  var output=getware.table.open('search-toolbar');
-  output+='<form id="form_search_'+date+'" method="post">';
-  output+='<table cellspacing="0" cellpadding="0" width="100%">';
-  /*
-  // INI TITLE
-  output+='<tr>';
-  for(i=0;i<=json.name.length;i++){
-   if(i<json.name.length)
-    output+='<td class="subtitle" width="'+json.size[i]+'%" valign="top" align="left">'+json.name[i]+'</td>';
-   else output+='<td class="subtitle" width="'+json.size[i]+'%" valign="top" align="left">&nbsp;</td>';
-  }
-  output+='</tr>';
-  */
-  // INI DATA INPUT
-  output+='<tr>';
-  for(i=0;i<=json.name.length;i++){
-   if(i<json.name.length) {
-    output+='<td valign="top" align="left">';
-     output+='<input id="'+i+'" type="text" class="search" value="'+json.data[i]+'" placeholder="'+json.name[i]+'" />'; //placeholder="'+json.name[i]+'"
-    output+='</td>';
-   } else {
-    output+='<td valign="top" align="left" width="64">';
-   	output+='<input type="button" title="Buscar" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="javascript:getware.get(\'module=admin&amp;admin='+json.module+'\',getware.ui.search.form(\'form_search_'+date+'\'));" value="Buscar">';
-    output+='</td>';
-   }
-  }
-  output+='</tr>';
+getware.ui.search = {
+  form: function(form) {
+    let string = 'window=' + form.substr(5, 13) + '&';
+    
+    $('form[id=' + form + '] input[type=text]').each(function() {
+      string += 'search[]=' + encodeURIComponent(this.value) + '&';
+    });
+    
+    $('form[id=' + form + '] select').each(function() {
+      string += 'filter[]=' + encodeURIComponent(this.value) + '&';
+    });
 
-  output+='</table>';
-  output+='</form>';
-  output+=getware.table.close();
-  $(json.window).html(output);
-  $(json.window+' input[type=text]').each(function(){
-   url='index.php?module=admin&admin='+json.module+'&search='+this.id+'&ajax'
-   $(this).autocomplete({source:url,minLength:0});
-  });
-  return false;
- }
+    return string;
+  },
+
+  onEnter: function(event) {
+    let key = event.which || event.keyCode;
+    if (key == 13)
+      return true;
+    else return false;
+  },
+
+  make: function(json) {
+    let date = new Date();
+    date = date.getTime();
+    getware.ui.date = date; // PARA QUE TENGA CONECTIVIDAD CON EL NAVBAR
+    
+    let output = getware.table.open('search-toolbar');
+    output += '<form id="form_search_' + date + '" method="post">';
+
+    // INI DATA INPUT
+    let onclick = 'getware.get(\'module=admin&amp;admin=' + json.module+'\',getware.ui.search.form(\'form_search_' + date + '\'))';
+    for(i = 0; i <= json.name.length; i++) {
+      if(i < json.name.length) {
+        output += '<div style="float:left; width:' + (json.size[i] * 10) + 'px;">';
+        output += '<input id="' + i + '" type="text" class="search" value="' + json.data[i] + '" placeholder="' + json.name[i] + '"';
+        output += ' onkeypress="javascript:if(getware.ui.search.onEnter(event)){' + onclick + '}" />'; 
+        output += '<select id="f' + i + '" style ="margin-left: -38px;border-top-width: 1px;padding-left: 0px;padding-top: 2px;padding-bottom: 2px;margin-top: -1px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">';
+        
+        let filter = ['like', 'high', 'low', 'middle'];
+        let filterName = ['..', '>', '<', '='];
+        for(j = 0; j < filter.length; j++) {
+          let selected = ''
+          if(json.filter) {
+            if(json.filter[i] == filter[j]) selected = ' selected';
+          }
+          output += '<option value="' + filter[j] + '"' + selected + '>' + filterName[j] +'</option>';
+        }
+        output += '</select>';
+        output += '</div>';
+      } else {
+        output += '<div style="float:left;">';
+        output += '<input type="button" title="Buscar" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"';
+        output += ' onclick="javascript:' + onclick + '" value="Buscar">';
+        output += '</div>';
+      }
+    }
+
+    output += '</form>';
+    output += getware.table.close();
+    $(json.window).html(output);
+    
+    $(json.window + ' input[type=text]').each(function() {
+      url='index.php?module=admin&admin='+json.module+'&search='+this.id+'&ajax'
+      $(this).autocomplete({source:url,minLength:0});
+    });
+    
+    return false;
+  }
 }

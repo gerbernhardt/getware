@@ -11,18 +11,17 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exit();
 
- $rows=0;
- $start=0;
- $limit=20;
- $sql='SELECT NULL';
- $sql.=$_MODULE['query']['from'];
- $sql.=$_MODULE['query']['join'];
- $sql.=$_MODULE['query']['where'];
- $sql.=$_MODULE['query']['order'];
- if($result=mysqli_query($_DB['session'],$sql)) {
-  if(isset($_GET['start']))
-   $start=$_GET['start'];
-  $rows=mysqli_num_rows($result);
- }
+$rows = 0;
+$start = 0;
+$limit = 20;
+
+$sql = 'SELECT COUNT(*) AS total';
+$sql .= $_MODULE['grid']['navbar'];
+if($result = mysqli_query($_DB['session'], $sql)) {
+    if(isset($_GET['start'])) $start = $_GET['start'];
+    if($fetch = $result->fetch_array(MYSQLI_ASSOC))
+        $rows = $fetch['total'];
+    else $rows = 0;
+}
 
 ?>

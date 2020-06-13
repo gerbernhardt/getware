@@ -10,19 +10,18 @@
  * the Free Software Foundation; either version 2 of the License.
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
-print '<section class="main">';
-print '<ul class="ch-grid">';
-$sql='SELECT x.* FROM movies AS x LIMIT 20';
-if($result=mysqli_query($_DB['session'],$sql)){
- while($fetch=$result->fetch_array()) {print '<li>';
-	print '<a href="javascript:player.make('.$fetch['id'].');">';
-	print ' <div class="ch-item" style="background-image:url('.$fetch['image'].');">';
-	print '  <div class="ch-info"  title="'.$fetch['description'].'"><h3>'.$fetch['title'].'</h3></div>';
-	print ' </div>';
-	print '</a>';
- }
-}
-
-print '</ul>';
-print '</section>';
 ?>
+<style>
+   .hero-image::after {
+    display: block;
+    position: relative;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+    margin-top: -150px;
+    height: 150px;
+    width: 90%;
+    content: '';
+}
+</style>
+<div class="hero-image">
+  <img width="90%" src="images/logos/home.png">
+</div>

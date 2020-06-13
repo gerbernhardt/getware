@@ -11,10 +11,29 @@
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
-class kernel_search{
+class kernel_search {
+  function module_vars() {
+    global $_MODULE, $_SEARCH;
+    $i = 0;
+    foreach($_SEARCH as $key => $value) {
+      $key = preg_replace('/\./', '', $key);
+      if(is_array($value)) {
+        $_MODULE['search']['size'][$i] = $value[0];
+        $_MODULE['search']['name'][$i] = $value[1];
+      } else {
+        $_MODULE['search']['size'][$i] = $value;
+        $_MODULE['search']['name'][$i] = $key;
+      }
+      $_MODULE['search']['field'][$i] = $key;
+      $i++;
+    }
+  }
 
  function autocomplete() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE,$KERNEL;
+  
+  if(!isset($_MODULE['search']['name'])) $this->module_vars();
+
   if(isset($_GET['search'])&&isset($_GET['term'])) {
    $x=$_MODULE['search']['field'][$_GET['search']];
    $x=$_TABLE['column']['eman'][$x];
@@ -61,7 +80,7 @@ class kernel_search{
     $table=$_TABLE['name'];
     $field=$_TABLE['column']['name'][$x];
    }
-   $sql='SELECT DISTINCT '.$field.' FROM '.$table.' AS x';
+   $sql='SELECT DISTINCT '.$field.' FROM `'.$table.'` AS x';
    $sql.=' WHERE '.$field.' LIKE \'%'.$_GET['term'].'%\' ORDER BY '.$field.' LIMIT 20';
    $values='';
    //exit($sql);
@@ -78,32 +97,41 @@ class kernel_search{
 
  function content() {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE;
+
+  if(!isset($_MODULE['search']['name'])) $this->module_vars();
+  
   $name='name:[';
   $size='size:[';
   $data='data:[';
+  $filter='filter:[';
   $condition='condition:{';
   for($i=0;$i<count($_MODULE['search']['name']);$i++){
+   
    $name.='"'.utf8_encode(strtoupper(str_replace('_',' ',$_MODULE['search']['name'][$i]))).'"';
    $size.='"'.$_MODULE['search']['size'][$i].'"';
-   isset($_POST['search'][$i])?$data.='"'.$_POST['search'][$i].'"':$data.='""';
+   isset($_POST['search'][$i]) ? $data .= '"'.$_POST['search'][$i].'"' : $data .= '""';
+   isset($_POST['filter'][$i]) ? $filter .= '"'.$_POST['filter'][$i].'"' : $filter .= '""';
+
    if(isset($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]])){
    	$condition.=$_MODULE['search']['name'][$i].':[';
    	for($j=0;$j<count($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]]);$j++){
    	 $condition.='"'.$_MODULE['search']['condition'][$_MODULE['search']['name'][$i]][$j].'"';
    	 if($j<count($_MODULE['search']['condition'][$_MODULE['search']['name'][$i]])-1) $condition.=',';
    	}
-   	$condition.=']';
+     $condition.=']';
+     
    }
    if($i<count($_MODULE['search']['name'])-1) {
     $name.=',';
     $size.=',';
     $data.=',';
+    $filter.=',';
    }
   }
   if(isset($_MODULE['next']))
    $_MODULE['output'].=',';
   else $_MODULE['output']='';
-  $_MODULE['output'].='{run:"getware.ui.search.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",'.$name.'],'.$size.'],'.$data.'],'.$condition.'}}';
+  $_MODULE['output'].='{run:"getware.ui.search.make",module:"'.$_GET['admin'].'",window:"td[id=content_center]",'.$name.'],'.$size.'],'.$data.'],'.$filter.'],'.$condition.'}}';
  }
 
 }

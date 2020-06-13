@@ -21,8 +21,8 @@ if(isset($_POST['password'])&&count($_POST['password'])==3) {
     $sql.=' WHERE x.id='.$_USER['id'];
     if(mysqli_query($_DB['session'],$sql))
      $CORE->alert(_PASSCHANGED);
-   } else $CORE->alert(_PASSMIN);
+   } else $CORE->alert('LA NUEVA CONTRASEÑA DEBE CONTENER MAS DE 5 CARACTERES');
   } else $CORE->alert(_PASSDIFFERENT);
- } else $CORE->alert(_PASSDIFFERENT);
+ } else $CORE->alert('CONTRASEÑA INCORRECTA');
 }
 ?>

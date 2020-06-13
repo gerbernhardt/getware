@@ -18,7 +18,7 @@
 .ui-dialog-titlebar-sort { position: absolute; right: -5px; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 
 .grid {
- width:820px;
+ width:100%;
  height:445px;
  overflow:hidden;
  border:1px solid black;

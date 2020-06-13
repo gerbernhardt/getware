@@ -43,7 +43,7 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
     if(function_exists('grid_before_edit'))
       $grid_before_edit = grid_before_edit($_GET['save'][$i]);
 
-    $sql='UPDATE '.$_TABLE['name'].' AS x';
+    $sql='UPDATE `'.$_TABLE['name'].'` AS x';
     $set=' SET ';
     for($j = 0; $j < count($row['name']); $j++) {
       if(!isset($_POST[$row['name'][$j]][$i]))
@@ -61,9 +61,9 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
           if(preg_match('/\[*\]/',$row['comment'][$j][$k])) {
             $reg = preg_replace('#(.*?)\[.*#si','\1',$row['comment'][$j][$k]);
             $subreg = explode(':',preg_replace('#.*\[(.*?)\]#si','\1',$row['comment'][$j][$k]));
-            $field .= '(SELECT x.' . $subreg[1] . ' FROM ' . $subreg[0] . ' AS x WHERE x' . $j . '.' . $reg . '=x.id)';
+            $field .= '(SELECT x.' . $subreg[1] . ' FROM `' . $subreg[0] . '` AS x WHERE x' . $j . '.' . $reg . '=x.id)';
           } else $field .= 'x' . $j . '.' . $row['comment'][$j][$k];
-          $field .= ',\''.$row['separator'][$j][$k] . '\'';
+          if($row['separator'][$j][$k] != '') $field .= ',\''.$row['separator'][$j][$k] . '\'';
           if($k < count($row['comment'][$j])-1) $field .= ',';
         }
         $field .= ')';
@@ -72,8 +72,8 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
         if(isset($_MODULE['condition'][$row['name'][$j]])) {
           $cond = $_MODULE['condition'][$row['name'][$j]];
           $in='';
-          $sqx = 'SELECT ' . $field . ' FROM ' . $_TABLE['name'] . ' AS x';
-          $sqx .= ' INNER JOIN ' . $row['comment'][$j][0] . ' AS x' . $j . ' ON x.' . $row['name'][$j] . '=x' . $j . '.id';
+          $sqx = 'SELECT ' . $field . ' FROM `' . $_TABLE['name'] . '` AS x';
+          $sqx .= ' INNER JOIN `' . $row['comment'][$j][0] . '` AS x' . $j . ' ON x.' . $row['name'][$j] . '=x' . $j . '.id';
           $sqx .= ' WHERE x.id=\'' . $_GET['save'][$i] . '\'';
           $result = mysqli_query($_DB['session'], $sqx);
           if($fetch = $result->fetch_array()) {
@@ -90,8 +90,7 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
             }
           }
         }
-
-        $sql.=' INNER JOIN ' . $row['comment'][$j][0] . ' AS x' . $j . ' ON ' . $field . '=\'' . $_POST[$row['name'][$j]][$i] . '\'';
+        $sql.=' INNER JOIN `' . $row['comment'][$j][0] . '` AS x' . $j . ' ON ' . $field . '=\'' . $_POST[$row['name'][$j]][$i] . '\'';
 
         if(isset($in)) {
           $sql .= ' AND ' . $field . ' IN(' . $in . ')';
@@ -123,11 +122,12 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
     }
 
     $sql .= $set;
-    //$KERNEL->alert($sql);
-    $sql .= ' WHERE x.id=' . $_GET['save'][$i] . ' AND ' . $_MODULE['restrict'][_EDIT];
-    
-    $rows .= '' . $_GET['save'][$i] . '';
-    
+    $sql .= ' WHERE x.id=' . $_GET['save'][$i];
+
+    if(isset($_MODULE['restrict'][_EDIT]) && $_MODULE['restrict'][_EDIT] != 1) $sql .= ' AND ' . $_MODULE['restrict'][_EDIT];
+    //exit($sql);
+
+    $rows .= '"' . $_GET['save'][$i] . '"';
     if(mysqli_query($_DB['session'], $sql)) {
       if(mysqli_affected_rows($_DB['session']) > 0) {
         $data .= '1';
@@ -135,7 +135,7 @@ if(isset($_GET['save']) && ($_ADMIN['edit'] == true)) {
         $data .= '0';
         unset($affected_rows[$i]);
       }
-      // funcion para el duplicado de registros
+      // duplicado de registros
       if(function_exists('grid_after_edit'))
         grid_after_edit($_GET['save'][$i], $grid_before_edit);
 

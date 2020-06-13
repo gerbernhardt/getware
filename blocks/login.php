@@ -12,7 +12,7 @@
 if(!preg_match('/index.php/', $_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 $content='<center>';
-$content.='<form enctype="multipart/form-data" method="post" action="?module=home" id="'.$_GET['module'].'_login_'.date('YmdHis').'">';
+$content.='<form enctype="multipart/form-data" method="post" action="?module=home" id="' . $_GET['module'] . '_login_' . date('YmdHis') . '">';
 $content.='<input type="text" autocomplete="off" class="username_block" value="" maxlength="25" size="12" name="username" id="username">';
 $content.='<br>';
 $content.='<br>';

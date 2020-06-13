@@ -12,6 +12,7 @@
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
 
 class kernel_dialog_axx_check{
+ 
  function restrict($i,$j) {
   global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE;
   if(isset($_MODULE['restrict'][_ADD][$_TABLE['column']['name'][$i]])) {
@@ -26,41 +27,44 @@ class kernel_dialog_axx_check{
    return eval($e);
   } else return true;
  }
+ 
  #
  # EL REGISTRO RELACIONAL TIENE QUE EXISTIR SI O SI
  #
  function exists($i,$j) {
-  global $_DB,$_ADMIN,$_TABLE,$_MODULE;
+  global $KERNEL,$_DB,$_ADMIN,$_TABLE,$_MODULE;
   if(isset($_MODULE['exists'][$_TABLE['column']['name'][$i]])) {
+    #
+    # MULTIPLEX  SELECT
+    #
+    $field='CONCAT(';
+    for($k=1;$k<count($_TABLE['column']['comment'][$i]);$k++) {
+      // SUB REGISTROS
+      if(preg_match('/\[*\]/',$_TABLE['column']['comment'][$i][$k])) {
+        $reg=preg_replace('#(.*?)\[.*#si','\1',$_TABLE['column']['comment'][$i][$k]);
+        $subreg=explode(':',preg_replace('#.*\[(.*?)\]#si','\1',$_TABLE['column']['comment'][$i][$k]));
+        $field.='(SELECT xx.'.$subreg[1].' FROM `'.$subreg[0].'` AS xx WHERE x.'.$reg.'=xx.id)';
+      } else $field.='x.'.$_TABLE['column']['comment'][$i][$k];
+      $field.=',\''.$_TABLE['column']['separator'][$i][$k].'\'';
+      if($k<count($_TABLE['column']['comment'][$i])-1) $field.=',';
+    }
+    $field.=')';
 
-   #
-   # MULTIPLEX  SELECT
-   #
-   $field='CONCAT(';
-   for($k=1;$k<count($_TABLE['column']['comment'][$i]);$k++) {
-    // SUB REGISTROS
-    if(preg_match('/\[*\]/',$_TABLE['column']['comment'][$i][$k])){
-     $reg=preg_replace('#(.*?)\[.*#si','\1',$_TABLE['column']['comment'][$i][$k]);
-     $subreg=explode(':',preg_replace('#.*\[(.*?)\]#si','\1',$_TABLE['column']['comment'][$i][$k]));
-     $field.='(SELECT xx.'.$subreg[1].' FROM '.$subreg[0].' AS xx WHERE x.'.$reg.'=xx.id)';
-    }else $field.='x.'.$_TABLE['column']['comment'][$i][$k];
-    $field.=',\''.$_TABLE['column']['separator'][$i][$k].'\'';
-    if($k<count($_TABLE['column']['comment'][$i])-1) $field.=',';
-   }
-   $field.=')';
+    $table=$_TABLE['column']['comment'][$i][0];
+    # REGISTRO RELACIONAL
+    if(isset($_TABLE['column']['comment'][$i])) {
+      $sql='SELECT NULL FROM `'.$table.'` AS x';
+      $sql.=' WHERE '.$field.'=\''.$_POST[$i][$j].'\'';
+      //exit($sql);
+    } else return true;
 
-   $table=$_TABLE['column']['comment'][$i][0];
-   # REGISTRO RELACIONAL
-   if(isset($_TABLE['column']['comment'][$i])) {
-    $sql='SELECT NULL FROM '.$table.' AS x';
-    $sql.=' WHERE '.$field.'=\''.$_POST[$i][$j].'\'';
-//exit($sql);
-   } else return true;
-   if($result=mysqli_query($_DB['session'],$sql)){
-    if(!mysqli_num_rows($result))
-     return false;
-    else return true;
-   } return false;
+    if($result=mysqli_query($_DB['session'],$sql)) {
+      //$KERNEL->alert(mysqli_num_rows($result));
+      if(mysqli_num_rows($result) > 0)
+        return true;
+      else return false;
+    } return false;
+
   } else return true;
  }
  #
@@ -75,17 +79,28 @@ class kernel_dialog_axx_check{
    else return true;
   } else return true;
  }
- #
- # EL REGISTRO DEBE SER UN ENTERO
- #
- function int($i,$j) {
+  #
+  # EL REGISTRO DEBE SER UN ENTERO
+  #
+  function int($i, $j) {
   global $_DB,$_ADMIN,$_TABLE,$_MODULE;
   if(isset($_MODULE['int'][$_TABLE['column']['name'][$i]])) {
-   if(intval($_POST[$i][$j])!=$_POST[$i][$j])
-    return false;
-   else return true;
-  } else return true;
- }
+    if(is_int($_POST[$i][$j]))
+      return true;
+    else return false;
+    } else return true;
+  }
+  #
+  # EL REGISTRO DEBE SER UN ENTERO
+  #
+  function float($i, $j) {
+    global $_DB,$_ADMIN,$_TABLE,$_MODULE;
+    if(isset($_MODULE['int'][$_TABLE['column']['name'][$i]])) {
+      if(is_float($_POST[$i][$j]))
+        return true;
+      else return false;
+      } else return true;
+    }
  #
  # EL REGISTRO ES UNICO
  # CHEQUEA QUE EL REGISTRO INSERTADO NO ESTE DUPLICADO
@@ -107,12 +122,12 @@ class kernel_dialog_axx_check{
    } else $field='x.'.$reference[1];
    # REGISTRO RELACIONAL
    if(isset($_TABLE['column']['comment'][$i])&&count($reference)>=2) {
-    $sql='SELECT NULL FROM '.$_TABLE['name'].' AS x';
-    $sql.=' INNER JOIN '.$reference[0].' AS x0 ON x.'.$_TABLE['column']['name'][$i].'=x0.id';
+    $sql='SELECT NULL FROM `'.$_TABLE['name'].'` AS x';
+    $sql.=' INNER JOIN `'.$reference[0].'` AS x0 ON x.'.$_TABLE['column']['name'][$i].'=x0.id';
     $sql.=' WHERE '.$field.'=\''.$_POST[$i][$j].'\'';
    # REGISTRO NORMAL
    } else {
-    $sql='SELECT NULL FROM '.$_TABLE['name'].' AS x';
+    $sql='SELECT NULL FROM `'.$_TABLE['name'].'` AS x';
     $sql.=' WHERE x.'.$_TABLE['column']['name'][$i].'=\''.$_POST[$i][$j].'\'';
    }
    $result=mysqli_query($_DB['session'],$sql);
@@ -121,70 +136,93 @@ class kernel_dialog_axx_check{
    else return true;
   } else return true;
  }
- function make_array($x) {
-  global $_DB,$_MODULE;
-  if(isset($_MODULE[$x])) {
-   $c=count($_MODULE[$x]);
-   for($i=0;$i<$c;$i++) {
-    $_MODULE[$x][$_MODULE[$x][$i]]=true;
-    unset($_MODULE[$x][$i]);
-   }
+  function make_array($x) {
+    global $_DB, $_MODULE;
+    if(isset($_MODULE[$x])) {
+      $count = count($_MODULE[$x]);
+      for($i = 0; $i < $count; $i++) {
+        $AUX = $_MODULE[$x][$i];
+        $_MODULE[$x][$AUX] = true;
+        unset($_MODULE[$x][$i]);
+      }
+    }
   }
- }
 
- #
- # ENVIA EL JSON CON LOS DATOS INCORRECTOS
- #
- function info() {
-  global $_DB,$_TABLE,$_ADMIN;
-  if(!isset($_POST['window'])) exit();
-  $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
-  $rows='';
-  $data='';
-  $this->make_array('int');
-  $this->make_array('blank');
-  $this->make_array('exists');
-  $this->make_array('unique');
-  for($j=0;$j<count($_POST[$_ADMIN['head']]);$j++) {
-   for($i=$_ADMIN['ini'];$i<$_ADMIN['end'];$i++) {
-    # GENERA LOS POST QUE NO EXISTEN
-    if(!isset($_POST[$i][$j])) {
-     if($i<$_ADMIN['head']&&isset($_POST[$i][$j-1]))
-      $_POST[$i][$j]=$_POST[$i][$j-1];
-     else $_POST[$i][$j]='';
+  #
+  # ENVIA EL JSON CON LOS DATOS INCORRECTOS
+  #
+  function info() {
+    global $_DB, $_TABLE, $_ADMIN;
+    if(!isset($_POST['window'])) exit();
+  
+    $_MODULE['output'] = '[';
+    $_MODULE['output'] .= '{';
+    $_MODULE['output'] .= 'run:"getware.ui.content.info.add",window:"' . $_POST['window'] . '",';
+    
+    $rows = '';
+    $data = '';
+  
+    $this->make_array('int');
+    $this->make_array('float');
+    $this->make_array('blank');
+    $this->make_array('exists');
+    $this->make_array('unique');
+
+    for($i = $_ADMIN['ini']; $i < $_ADMIN['head']; $i++) {
+      # GENERA LOS POST QUE NO EXISTEN
+      if(!isset($_POST[$i][0])) $_POST[$i][0] = '';
+      $value = 1;
+      
+      if(!$this->int($i, 0)) $value = 0;
+      if(!$this->float($i, 0)) $value = 0;
+      if(!$this->blank($i, 0)) $value = 0;
+      if(!$this->unique($i, 0)) $value = 0;
+      if(!$this->exists($i, 0)) $value = 0;
+      if(!$this->restrict($i, 0)) $value = 0;
+      
+      $rows .= '"' . $i . 'x' . '",';
+      $data .= '"' . $value . '",';
     }
-    $row=$i.'x';
-    if($i>=$_ADMIN['head'])
-     $row.=($j+1);
-    if(isset($_POST[$i][$j]))
-     if($this->unique($i,$j))
-      if($this->int($i,$j))
-       if($this->blank($i,$j))
-        if($this->exists($i,$j))
-         if($this->restrict($i,$j))
-          $value=1;
-         else $value=0;
-        else $value=0;
-       else $value=0;
-      else $value=0;
-     else $value=0;
-    else $value=5;
-    $rows.='"'.$row.'"';
-    $data.='"'.$value.'"';
-    if($i<count($_TABLE['column']['name'])-1) {
-     $rows.=',';
-     $data.=',';
-    }
+
+    for($i = $_ADMIN['head']; $i < $_ADMIN['end']; $i++) {
+      for($j = 0; $j < count($_POST[$_ADMIN['head']]); $j++) {
+        # GENERA LOS POST QUE NO EXISTEN
+        if(!isset($_POST[$i][$j])) $_POST[$i][$j] = '';
+        //print $i . 'x ' . $j . '=> ' . $_POST[$i][$j].'<br>';
+
+        $value = 1;
+        if(!$this->int($i, $j)) $value = 0;
+        if(!$this->blank($i, $j)) $value = 0;
+        if(!$this->unique($i, $j)) $value = 0;
+        if(!$this->exists($i, $j)) $value = 0;
+        if(!$this->restrict($i, $j)) $value = 0;
+
+        $row = $i . 'x' . $j;
+        $rows .= '"' . $row . '"';
+        $data .= '"' . $value . '"';
+        if($j < count($_POST[$_ADMIN['head']]) - 1) {
+          $rows .= ',';
+          $data .= ',';
+        }
+      }
+      if($i < $_ADMIN['end'] - 1) {
+        $rows .= ',';
+        $data .= ',';
+      }
+    } 
+
+    $_MODULE['output'] .= 'rows:[' . $rows . '],';
+    $_MODULE['output'] .= 'data:[' . $data . ']';
+
+    $_MODULE['output'] .= '}';
+    $_MODULE['output'] .= ']';
+    
+    if(preg_match('/"0"/', $_MODULE['output']))
+      exit($_MODULE['output']);
+    else return true;
   }
-   if($j<count($_POST[$_ADMIN['head']])-1) {
-    $rows.=',';$data.=',';
-   }
-  }
-  $_MODULE['output'].='rows:['.$rows.'],data:['.$data.']}]';
-  if(preg_match('/"0"/',$_MODULE['output']))
-   exit($_MODULE['output']);
-  else return true;
- }
 }
-$KERNEL->dialog->axx->check=new kernel_dialog_axx_check;
+
+$KERNEL->dialog->axx->check = new kernel_dialog_axx_check;
+
 ?>

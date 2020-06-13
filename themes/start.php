@@ -22,13 +22,13 @@ class theme {
   print '<div id="window-dialog"></div>';
   print '<div id="window-message"></div>';
   print '<div id="window-menu" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></div>';
-
-  print '<table width="'.$_SETTINGS['width'].'" cellspacing="0" cellpadding="0" border="0">';
+  $_SETTINGS['width'] = $_SETTINGS['content_left'] + $_SETTINGS['content_center'];
+  print '<table width="' . $_SETTINGS['width'] . '" cellspacing="0" cellpadding="0" border="0">';
   print '<tr>';
-  print '<td valign="top" align="right">';
+  print '<td valign="top" align="right" style="padding-right: 10px;">';
   if(!isset($_USER))
    print ' [ <a href="#" onclick="javascript:getware.get(\'module=login&amp;ajax\');return false;">'._LOGIN.'</a> ]';
-  else print $_USER['username'].' [ <a title="'._EXIT.'" href="?logout">'._LOGOUT.'</a> ]';
+  else print '<a href="#" onclick="javascript:getware.get(\'module=login&amp;ajax\');return false;">'.$_USER['username'].'</a> [ <a title="'._EXIT.'" href="?logout">'._LOGOUT.'</a> ]';
   print '</td>';
   print '</tr>';
   print '</table>';
@@ -49,16 +49,22 @@ class theme {
   print '<br>';
 
   # INI TABLE CONTENT
-  print '<table width="'.$_SETTINGS['width'].'" cellspacing="0" cellpadding="0" border="0">';
+  print '<table id="main_center" width="' . $_SETTINGS['width'] . '" cellspacing="0" cellpadding="0" border="0">';
 
   # INI CONTENT LEFT
-  print '<td id="content_left" width="171" valign="top">';
+  print '<td id="content_left" width="' . $_SETTINGS['content_left'] . '" valign="top">';
   $CORE->blocks('left');
   print '<div id="progressbar"></div>';
+  ?>
+<script>
+
+
+</script>
+  <?php
   print '</td>';
 
   # INI CONTENT CENTER
-  print '<td id="content_center" align="center" valign="top">';
+  print '<td id="content_center" width="' . $_SETTINGS['content_center'] . '" align="center" valign="top">';
  }
 
  # FUNCTION FOOTER()

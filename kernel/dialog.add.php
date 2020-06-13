@@ -45,26 +45,42 @@ class kernel_dialog_add{
  # ENVIA EL JSON CON LOS DATOS INCORRECTOS
  #
  function info() {
-  global $_TABLE,$_ADMIN;
-  if(!isset($_POST['window'])) exit();
-  $_MODULE['output']='[{run:"getware.ui.content.info.add",window:"'.$_POST['window'].'",';
-  $rows='';
-  $data='';
-  for($i=$_ADMIN['ini'];$i<$_ADMIN['end'];$i++) {
-   # GENERA LOS POST QUE NO EXISTEN
-   if($this->restrict($i))
-    $value=1;
-   else $value=0;
-   $rows.='"'.$i.'"';$data.='"'.$value.'"';
-   if($i<$_ADMIN['end']-1) {
-    $rows.=',';$data.=',';
-   }
-  }
-  $_MODULE['output'].='rows:['.$rows.'],data:['.$data.']}]';
-  if(preg_match('/"0"/',$_MODULE['output']))
-   exit($_MODULE['output']);
-  else return true;
- }
+    global $_TABLE, $_ADMIN;
+    if(!isset($_POST['window'])) exit();
+
+    $_MODULE['output'] = '[';
+    $_MODULE['output'] .= '{';
+    $_MODULE['output'] .= 'run:"getware.ui.content.info.add",';
+    $_MODULE['output'] .= 'window:"'.$_POST['window'].'",';
+
+    $rows = 'rows:[';
+    $data = 'data:[';
+    for($i = $_ADMIN['ini']; $i < $_ADMIN['end']; $i++) {
+        # GENERA LOS POST QUE NO EXISTEN
+        if($this->restrict($i))
+            $value = 1;
+        else $value = 0;
+
+        $rows .= '"' . $i . '"';
+        $data .= '"' . $value . '"';
+        if($i < $_ADMIN['end'] - 1) {
+            $rows .= ',';
+            $data .= ',';
+        }
+    }
+    $rows .= '],';
+    $data .= ']';
+
+    $_MODULE['output'] .= $rows;
+    $_MODULE['output'] .= $data;
+
+    $_MODULE['output'] .= '}';
+    $_MODULE['output'] .= ']';
+    //exit($_MODULE['output']);
+    if(preg_match('/"0"/', $_MODULE['output']))
+        exit($_MODULE['output']);
+    else return true;
+}
  
 }
 

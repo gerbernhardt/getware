@@ -14,7 +14,7 @@ if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ../')&&exi
 class kernel_query{
 
  # EXCEL GENERATOR
- function excel() {
+ function excel($no_limits = false) {
   global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE,$CORE,$sql;
   include('kernel/query.excel.php');
  }
@@ -27,7 +27,7 @@ class kernel_query{
 
  # SQL GENERATOR
  function make() {
-  global $_DB,$_USER,$_ADMIN,$_TABLE,$_MODULE,$CORE,$sql;
+  global $_DB, $KERNEL, $_USER, $_ADMIN, $_TABLE, $_MODULE, $CORE, $sql;
   include('kernel/query.make.php');
  }
 
@@ -51,8 +51,8 @@ class kernel_query{
   $select='';$join='';$where='';
   for($i=count($tables)-1;$i>-1;$i--){
    if($i<count($tables)-1)
-    $join.=' INNER JOIN '.$tables[$i].' AS xx'.$i.' ON xx'.$i.'.'.$rows[$i].'=xx'.($i+1).'.id';
-   else $select.='SELECT DISTINCT  xx'.$i.'.'.$rows[$i].' FROM '.$tables[$i].' AS xx'.$i;
+    $join.=' INNER JOIN `'.$tables[$i].'` AS xx'.$i.' ON xx'.$i.'.'.$rows[$i].'=xx'.($i+1).'.id';
+   else $select.='SELECT DISTINCT  xx'.$i.'.'.$rows[$i].' FROM `'.$tables[$i].'` AS xx'.$i;
   }
   $where.=' WHERE x'.$as.'.'.$row.'=xx0.id';
   return '('.$select.$join.$where.')';

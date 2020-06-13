@@ -11,12 +11,16 @@
  */
 
 # INIT TIMER COUNT
-$_TIME['init']=explode(' ',microtime());
-$_TIME['init']=$_TIME['init'][0]+$_TIME['init'][1];
+$_TIME['init'] = explode(' ',microtime());
+$_TIME['init'] = $_TIME['init'][0] + $_TIME['init'][1];
 
-$config=explode('/',$_SERVER['REQUEST_URI']);
+$_MOBILE = false;
+if(preg_match('/Mobile/', $_SERVER['HTTP_USER_AGENT'])) $_MOBILE = true;
+    
+$config = explode('/', $_SERVER['REQUEST_URI']);
+
 # INCLUDE DATABASE CONFIGURATION
-include('../'.$config[1].'/config.php');
+include('../' . $config[1] . '/config.php');
 
 # INCLUDE SECURITY OPTIONS
 include('security.php');
@@ -25,21 +29,24 @@ include('security.php');
 include('auth.php');
 
 # SELECT WEBPAGE SETTINGS
-$sql='SELECT x.* FROM sys_settings AS x ORDER BY x.id DESC LIMIT 1';
-if($result=mysqli_query($_DB['session'],$sql))
- $_SETTINGS=$result->fetch_array();
+$sql = 'SELECT x.* FROM `sys~settings` AS x ORDER BY x.id DESC LIMIT 1';
+if($result = mysqli_query($_DB['session'], $sql))
+    $_SETTINGS = $result->fetch_array();
 else exit(mysqli_error($_DB['session']));
 
 # SELECT LANGUAGE
-include($_SETTINGS['language'].'.php');
+include($_SETTINGS['language'] . '.php');
 
 # SELECT THEME
-include('themes/'.$_SETTINGS['theme'].'.php');
-$THEME=new theme;
+if($_MOBILE)
+    include('themes/'.$_SETTINGS['theme'].'-mobile.php');
+else include('themes/'.$_SETTINGS['theme'] . '.php');
+
+$THEME = new theme;
 
 # INCLUDE GENERAL FUNCTIONS
 include('core.php');
-$CORE=new core;
+$CORE = new core;
 
 # RUN SERVICES
 include('services.php');
@@ -54,9 +61,9 @@ $THEME->header();
 include('modules.php');
 
 # END TIMER COUNT
-$_TIME['end']=explode(' ',microtime());
-$_TIME['end']=$_TIME['end'][0]+$_TIME['end'][1];
-$_TIME['total']=substr($_TIME['end']-$_TIME['init'],0,5);
+$_TIME['end'] = explode(' ', microtime());
+$_TIME['end'] = $_TIME['end'][0] + $_TIME['end'][1];
+$_TIME['total'] = substr($_TIME['end'] - $_TIME['init'], 0, 5);
 
 # FOOTER
 $THEME->footer();

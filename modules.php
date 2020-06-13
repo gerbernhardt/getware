@@ -10,20 +10,21 @@
  * the Free Software Foundation; either version 2 of the License.
  */
 if(!preg_match('/index.php/',$_SERVER['PHP_SELF'])) header('Location: ./')&&exit();
-$index=1;
- $sql='SELECT x.file,x.access FROM sys_modules AS x WHERE x.file=\''.$_GET['module'].'\'';
-if($result=mysqli_query($_DB['session'],$sql)) {
- if($fetch=$result->fetch_array()) {
-  if($CORE->access($fetch['access'])) {
-   if(file_exists('modules/'.$_GET['module'].'.php'))
-    include('modules/'.$_GET['module'].'.php');
-   else $CORE->alert(_MODULENOFOUND);
-  } else {
-   if($fetch['access']==1)
-    $CORE->login(_MODULEUSERS);
-   else $CORE->alert(_MODULEGUEST);
-  }
- } else $CORE->alert(_MODULENOFOUND);
+
+$index = 1;
+$sql = 'SELECT x.file, x.access FROM `sys~modules` AS x WHERE x.file = \'' . $_GET['module'] . '\'';
+if($result = mysqli_query($_DB['session'], $sql)) {
+    if($fetch = $result->fetch_array()) {
+        if($CORE->access($fetch['access'])) {
+            if(file_exists('modules/' . $_GET['module'] . '.php'))
+                include('modules/' . $_GET['module'] . '.php');
+            else $CORE->alert(_MODULENOFOUND);
+        } else {
+            if($fetch['access'] == 1)
+                $CORE->login(_MODULEUSERS);
+            else $CORE->alert(_MODULEGUEST);
+        }
+    } else $CORE->alert(_MODULENOFOUND);
 } else $CORE->alert(_MODULENOFOUND);
 
 ?>
