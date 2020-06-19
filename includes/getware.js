@@ -17,9 +17,11 @@ function roundToTwo(num) {
   num = Number(num);
   return +(Math.round(num + "e+2")  + "e-2");
 }
+
 function toFixed(str) {
   return parseFloat(parseFloat(str).toFixed(2));
-}    
+}
+
 function textToNum(str) {
   str += '';
   
@@ -32,6 +34,7 @@ function textToNum(str) {
   str = str.replace(regExp, replace);
   return parseFloat(parseFloat(str).toFixed(2));
 }
+
 function numToText(str) {
   roundToTwo(str);
   str = parseFloat(str).toFixed(2);
@@ -135,11 +138,9 @@ var getware = {
         }
       },
       success: function(data) {
-      getware.data(data);
+        getware.data(data);
       }
     });
-
-    return false;
   },
 
  getfile: function(url, date){

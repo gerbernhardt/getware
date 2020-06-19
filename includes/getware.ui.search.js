@@ -41,12 +41,12 @@ getware.ui.search = {
     output += '<form id="form_search_' + date + '" method="post">';
 
     // INI DATA INPUT
-    let onclick = 'getware.get(\'module=admin&amp;admin=' + json.module+'\',getware.ui.search.form(\'form_search_' + date + '\'))';
+    let onclick = 'getware.get(\'module=admin&amp;admin=' + json.module+'\', getware.ui.search.form(\'form_search_' + date + '\'));return false;';
     for(i = 0; i <= json.name.length; i++) {
       if(i < json.name.length) {
         output += '<div style="float:left; width:' + (json.size[i] * 10) + 'px;">';
         output += '<input id="' + i + '" type="text" class="search" value="' + json.data[i] + '" placeholder="' + json.name[i] + '"';
-        output += ' onkeypress="javascript:if(getware.ui.search.onEnter(event)){' + onclick + '}" />'; 
+        output += ' onkeypress="if(getware.ui.search.onEnter(event)){' + onclick + '}" />'; 
         output += '<select id="f' + i + '" style ="margin-left: -38px;border-top-width: 1px;padding-left: 0px;padding-top: 2px;padding-bottom: 2px;margin-top: -1px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">';
         
         let filter = ['like', 'high', 'low', 'middle'];

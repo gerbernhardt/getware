@@ -441,19 +441,23 @@ getware.ui.grid = {
       $(g + ' div li div[id*=row-0]').css('width', 38);
       $(g + ' div li div[id*=row-0] input[type=button]').click(function() {
         let x = $(this).parent().parent();
-        if($(x).height() < 42) {
+        if($(x).height() == 24) {
           $(this).css('background', 'url(images/navbar_minus.png) no-repeat');
-          $(this).css('height', '40');
+          $(this).css('height', '18');
           for(i = 0; i < json.extra.length; i++) {
-            $(x).find('div[id*=row-' + json.extra[i] + ']').css('float', 'initial');
-            $(x).height($(x).height() + 22);
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('clear', 'both');
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('position', 'relative');
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('margin-left', '45px');
           }
+          $(x).height($(x).height() + (22 * json.extra.length));
         } else {
           $(this).css('background','url(images/navbar_plus.png) no-repeat');
           for(i = 0; i < json.extra.length; i++) {
-            $(x).find('div[id*=row-' + json.extra[i] + ']').css('float', 'left');
-            $(x).height($(x).height() - 22);
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('clear', 'none');
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('position', 'none');
+            $(x).find('div[id*=row-' + json.extra[i] + ']').css('margin-left', '2px');
           }
+          $(x).height($(x).height() - (22 * json.extra.length));
         }
       });
     }
